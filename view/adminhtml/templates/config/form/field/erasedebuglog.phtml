@@ -1,0 +1,15 @@
+<?php
+/** @var $block \Worldline\Payment\Block\Adminhtml\System\Config\EraseDebugLog */
+?>
+<td class="label">
+    <label for="<?= $block->escapeHtml($block->getHtmlId()) ?>"></label>
+</td>
+<td class="value">
+    <button class="scalable"
+            type="button"
+            id="<?= $block->escapeHtmlAttr($block->getHtmlId()) ?>"
+            onclick="window.location.href='<?= $block->escapeUrl($block->getAjaxUrl()) ?>'"
+    >
+        <span id="<?= $block->getHtmlId() ?>_result"><?= $block->escapeHtml($block->getLabel()) ?></span>
+    </button>
+</td>

@@ -1,0 +1,60 @@
+<div class="payment-method" data-bind="css: {'_active': (getCode() == isChecked())}, afterRender: initializeTokenizer">
+    <div class="payment-method-title field choice">
+        <input type="radio"
+               name="payment[method]"
+               class="radio"
+               data-bind="attr: {'id': getCode()}, value: getCode(), checked: isChecked, click: selectPaymentMethod, visible: isRadioButtonVisible()"/>
+        <label data-bind="attr: {'for': getCode()}" class="label"><span data-bind="text: getTitle()"></span></label>
+        <!--ko if: getAvailableTypes().length >= 1 -->
+        <ul class="credit-card-types worldline-payment-types">
+            <!-- ko foreach: {data: getAvailableTypes(), as: 'item'} -->
+            <li class="item">
+                <!--ko if: $parent.getIcons(item) -->
+                <img data-bind="attr: {
+                    'src': $parent.getIcons(item).url,
+                    'alt': $parent.getIcons(item).title
+                }">
+                <!--/ko-->
+            </li>
+            <!--/ko-->
+        </ul>
+        <!--/ko-->
+    </div>
+
+    <div class="payment-method-content">
+        <div id="div-hosted-tokenization"></div>
+        <div id="worldline_cc-actionModalWrapper">
+            <div id="worldline_cc-actionModal">
+                <iframe frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
+            </div>
+        </div>
+        <!-- ko foreach: getRegion('messages') -->
+        <!-- ko template: getTemplate() --><!-- /ko -->
+        <!--/ko-->
+        <div class="payment-method-billing-address">
+            <!-- ko foreach: $parent.getRegion(getBillingAddressFormName()) -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="checkout-agreements-block">
+            <!-- ko foreach: $parent.getRegion('before-place-order') -->
+            <!-- ko template: getTemplate() --><!-- /ko -->
+            <!--/ko-->
+        </div>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <button class="action primary checkout"
+                        type="submit"
+                        data-bind="
+                        click: placeOrder,
+                        attr: {title: $t('Place Order')},
+                        enable: (getCode() == isChecked()),
+                        css: {disabled: !isPlaceOrderActionAllowed()}
+                        "
+                        disabled>
+                    <span data-bind="i18n: 'Place Order'"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

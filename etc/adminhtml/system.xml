@@ -1,0 +1,522 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="worldline" translate="label" sortOrder="100">
+            <label>Worldline Online Payments</label>
+        </tab>
+        <section id="payment">
+            <group id="worldline" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Worldline Online Payments</label>
+                <field id="payments_info" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\Payments</frontend_model>
+                </field>
+            </group>
+        </section>
+        <section id="worldline_general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>General</label>
+            <tab>worldline</tab>
+            <resource>Worldline_Payment::config_worldline</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Information</label>
+                <attribute type="expanded">1</attribute>
+                <field id="info" translate="comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\Info</frontend_model>
+                </field>
+                <field id="version" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\Version</frontend_model>
+                </field>
+            </group>
+        </section>
+        <section id="worldline_connection" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Connection</label>
+            <tab>worldline</tab>
+            <resource>Worldline_Payment::config_worldline</resource>
+            <group id="connection" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Connection</label>
+                <field id="environment_mode" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Environment Mode</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\EnvironmentModeOptions</source_model>
+                </field>
+                <field id="api_key" translate="label" type="obscure" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API Key</label>
+                    <validate>required-entry</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="api_secret" translate="label" type="obscure" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API Secret</label>
+                    <validate>required-entry</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                </field>
+                <field id="merchant_id" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Merchant ID (PSPID)</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="production_api_url" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Production API URL</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="environment_mode">1</field>
+                    </depends>
+                </field>
+                <field id="testing_api_url" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Testing API URL</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="environment_mode">0</field>
+                    </depends>
+                </field>
+                <field id="test_connection" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Test Connection</label>
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\TestConnection</frontend_model>
+                </field>
+            </group>
+            <group id="webhook" translate="label" type="text" sortOrder="20" showInDefault="1">
+                <label>Webhook</label>
+                <field id="allow_receiving_webhooks" translate="label comment" type="select" sortOrder="10" showInDefault="1" canRestore="1">
+                    <label>Allow Receiving Webhooks</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[<a href="https://support.direct.ingenico.com/documentation/api/webhooks" target="_blank">Need help?</a>]]></comment>
+                </field>
+                <field id="webhook_url" translate="label comment" type="text" sortOrder="20" showInDefault="1">
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\WebhookUrl</frontend_model>
+                    <depends>
+                        <field id="allow_receiving_webhooks">1</field>
+                    </depends>
+                </field>
+                <field id="key" translate="label" type="obscure" sortOrder="30" showInDefault="1">
+                    <label>Key</label>
+                    <validate>required-entry</validate>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <depends>
+                        <field id="allow_receiving_webhooks">1</field>
+                    </depends>
+                </field>
+                <field id="secret_key" translate="label" type="obscure" sortOrder="40" showInDefault="1">
+                    <label>Secret Key</label>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <validate>required-entry</validate>
+                    <comment>To retrieve webhooks credentials, login to the Worldline Back Office</comment>
+                    <depends>
+                        <field id="allow_receiving_webhooks">1</field>
+                    </depends>
+                </field>
+                <field id="webhook_info" translate="label" type="text" sortOrder="50" showInDefault="1">
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\WebhookInfo</frontend_model>
+                    <depends>
+                        <field id="allow_receiving_webhooks">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="worldline_payment" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Payment Methods</label>
+            <tab>worldline</tab>
+            <resource>Worldline_Payment::config_worldline</resource>
+            <group id="credit_card" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Credit Cards (iFrame)</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_cc/active</config_path>
+                </field>
+                <field id="worldline_cc_vault_active" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>Enable Saved Payment (Vault)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_cc_vault/active</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <requires>
+                        <group id="active"/>
+                    </requires>
+                </field>
+                <field id="vault_title" type="text" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Vault Title</label>
+                    <validate>required-entry</validate>
+                    <config_path>payment/worldline_cc_vault/title</config_path>
+                    <depends>
+                        <field id="worldline_cc_vault_active">1</field>
+                    </depends>
+                </field>
+                <field id="title" type="text" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Title</label>
+                    <validate>required-entry</validate>
+                    <config_path>payment/worldline_cc/title</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="debug" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_cc/debug</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="template_id" type="text" translate="label" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>HTML Template ID</label>
+                    <validate>required-entry</validate>
+                    <config_path>payment/worldline_cc/template_id</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="sort_order" type="text" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1">
+                    <label>Sort</label>
+                    <config_path>payment/worldline_cc/sort_order</config_path>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="payment_action" type="select" translate="label" sortOrder="80" showInDefault="1" showInWebsite="1">
+                    <label>Payment Action</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\PaymentActionOptions</source_model>
+                    <config_path>payment/worldline_cc/payment_action</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="authorization_mode" type="select" translate="label" sortOrder="90" showInDefault="1" showInWebsite="1">
+                    <label>Authorization Mode</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\AuthorizationModeOptions</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="payment_action">authorize</field>
+                    </depends>
+                    <config_path>payment/worldline_cc/authorization_mode</config_path>
+                </field>
+                <field id="order_status" type="select" translate="label" sortOrder="100" showInDefault="1" showInWebsite="1">
+                    <label>Default Order Status</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\OrderStatusOptions</source_model>
+                    <config_path>payment/worldline_cc/order_status</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="110" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                    <config_path>payment/worldline_cc/allowspecific</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="120" showInDefault="1" showInWebsite="1">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="allowspecific">1</field>
+                    </depends>
+                    <config_path>payment/worldline_cc/specificcountry</config_path>
+                </field>
+                <field id="allow_specific_currency" translate="label" type="select" sortOrder="130" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Payment from Applicable Currencies</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\AllSpecificCurrencies</source_model>
+                    <config_path>payment/worldline_cc/allow_specific_currency</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="currency" translate="label" type="multiselect" sortOrder="140" showInDefault="1" canRestore="1">
+                    <label>Payment from Specific Currencies</label>
+                    <source_model>Magento\Config\Model\Config\Source\Locale\Currency\All</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="allow_specific_currency">1</field>
+                    </depends>
+                    <config_path>payment/worldline_cc/currency</config_path>
+                </field>
+                <field id="allow_specific_customer_group" translate="label" type="select" sortOrder="150" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Payment from Applicable Customer Groups</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\AllSpecificCustomerGroups</source_model>
+                    <config_path>payment/worldline_cc/allow_specific_customer_group</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="customer_group" translate="label" type="multiselect" sortOrder="160" showInDefault="1" showInWebsite="1">
+                    <label>Payment from Specific Customer Groups</label>
+                    <source_model>Magento\Customer\Model\Customer\Source\GroupSourceInterface</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="allow_specific_customer_group">1</field>
+                    </depends>
+                    <config_path>payment/worldline_cc/customer_group</config_path>
+                </field>
+                <field id="min_order_total" translate="label" type="text" sortOrder="170" showInDefault="1" showInWebsite="1">
+                    <label>Minimum Order Total</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <config_path>payment/worldline_cc/min_order_total</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="max_order_total" translate="label" type="text" sortOrder="180" showInDefault="1" showInWebsite="1">
+                    <label>Maximum Order Total</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <config_path>payment/worldline_cc/max_order_total</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="cc_types" type="multiselect" translate="label" sortOrder="190" showInDefault="1" showInWebsite="1">
+                    <label>Available Credit Card Types</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\CreditCardTypeOptions</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <config_path>payment/worldline_cc/cc_types</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="pwa_route" translate="label comment" type="text" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Return URL</label>
+                    <config_path>payment/worldline_cc/pwa_route</config_path>
+                    <comment><![CDATA[Should be set only if you use PWA Studio or any other 3rd party frontend.]]></comment>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="saved_payment_sort_order" type="text" translate="label" sortOrder="210" showInDefault="1" showInWebsite="1">
+                    <label>Saved Payment Sort order</label>
+                    <config_path>payment/worldline_cc/saved_payment_sort_order</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="skip_3d" translate="label tooltip" type="select" sortOrder="220" showInDefault="1" showInWebsite="1">
+                    <label>Skip 3DSecure Authentication</label>
+                    <tooltip>This option should not be turned off if the merchant is based in a EU country</tooltip>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_cc/skip_3d</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="hosted_checkout" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Hosted Checkout (Redirect to Worldline)</label>
+                <field id="active" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_hosted_checkout/active</config_path>
+                </field>
+                <field id="vault" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1">
+                    <label>Enable Saved Payment (Vault)</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_hosted_checkout_vault/active</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="vault_title" type="text" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Vault Title</label>
+                    <validate>required-entry</validate>
+                    <config_path>payment/worldline_hosted_checkout_vault/title</config_path>
+                    <depends>
+                        <field id="vault">1</field>
+                    </depends>
+                </field>
+                <field id="title" type="text" translate="label" sortOrder="40" showInDefault="20" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Title</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/title</config_path>
+                </field>
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="50" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Payment from Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                    <config_path>payment/worldline_hosted_checkout/allowspecific</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="60" showInDefault="1" showInWebsite="1">
+                    <label>Payment from Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="allowspecific">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/specificcountry</config_path>
+                </field>
+                <field id="allow_specific_currency" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Payment from Applicable Currencies</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\AllSpecificCurrencies</source_model>
+                    <config_path>payment/worldline_hosted_checkout/allow_specific_currency</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="currency" translate="label" type="multiselect" sortOrder="80" showInDefault="1" canRestore="1">
+                    <label>Payment from Specific Currencies</label>
+                    <source_model>Magento\Config\Model\Config\Source\Locale\Currency\All</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="allow_specific_currency">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/currency</config_path>
+                </field>
+                <field id="allow_specific_customer_group" translate="label" type="select" sortOrder="90" showInDefault="1" showInWebsite="1" canRestore="1">
+                    <label>Payment from Applicable Customer Groups</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\AllSpecificCustomerGroups</source_model>
+                    <config_path>payment/worldline_hosted_checkout/allow_specific_customer_group</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="customer_group" translate="label" type="multiselect" sortOrder="100" showInDefault="1" showInWebsite="1">
+                    <label>Payment from Specific Customer Groups</label>
+                    <source_model>Magento\Customer\Model\Customer\Source\GroupSourceInterface</source_model>
+                    <can_be_empty>1</can_be_empty>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="allow_specific_customer_group">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/customer_group</config_path>
+                </field>
+                <field id="template_id" type="text" translate="label" sortOrder="110" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>HTML Template ID</label>
+                    <config_path>payment/worldline_hosted_checkout/template_id</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="min_order_total" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1">
+                    <label>Minimum Order Total</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <config_path>payment/worldline_hosted_checkout/min_order_total</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="max_order_total" translate="label" type="text" sortOrder="130" showInDefault="1" showInWebsite="1">
+                    <label>Maximum Order Total</label>
+                    <validate>validate-number validate-zero-or-greater</validate>
+                    <config_path>payment/worldline_hosted_checkout/max_order_total</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="debug" translate="label" type="select" sortOrder="140" showInDefault="1" showInWebsite="1">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/debug</config_path>
+                </field>
+                <field id="sort_order" type="text" translate="label" sortOrder="150" showInDefault="1" showInWebsite="1">
+                    <label>Sort</label>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/sort_order</config_path>
+                </field>
+                <field id="payment_action" type="select" translate="label" sortOrder="160" showInDefault="1" showInWebsite="1">
+                    <label>Payment Action</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\PaymentActionOptions</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/payment_action</config_path>
+                </field>
+                <field id="authorization_mode" type="select" translate="label" sortOrder="170" showInDefault="1" showInWebsite="1">
+                    <label>Authorization Mode</label>
+                    <source_model>Worldline\Payment\Model\Config\Source\AuthorizationModeOptions</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                        <field id="payment_action">authorize</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/authorization_mode</config_path>
+                </field>
+                <field id="order_status" type="select" translate="label" sortOrder="180" showInDefault="1" showInWebsite="1">
+                    <label>Default Order Status</label>
+                    <source_model>Magento\Sales\Model\Config\Source\Order\Status\NewStatus</source_model>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                    <config_path>payment/worldline_hosted_checkout/order_status</config_path>
+                </field>
+                <field id="pwa_route" translate="label comment" type="text" sortOrder="190" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom Return URL</label>
+                    <config_path>payment/worldline_hosted_checkout/pwa_route</config_path>
+                    <comment><![CDATA[Should be set only if you use PWA Studio or any other 3rd party frontend.]]></comment>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="cart_lines" translate="label tooltip" type="select" sortOrder="200" showInDefault="1" showInWebsite="1">
+                    <label>Submit Customer Cart Items Data to Worldline</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <config_path>payment/worldline_hosted_checkout/cart_lines</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="debug" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Debug Logs</label>
+                <field id="download_debug" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Download Debug Log</label>
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\DownloadDebugLog</frontend_model>
+                </field>
+                <field id="erase_debug" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Erase Debug Log</label>
+                    <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\EraseDebugLog</frontend_model>
+                </field>
+                <field id="logging_lifetime" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Logging Records Lifetime (Days)</label>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                </field>
+            </group>
+        </section>
+        <section id="worldline_order_status_updater" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Order Status Updater</label>
+            <tab>worldline</tab>
+            <resource>Worldline_Payment::config_worldline</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>General</label>
+                <field id="fallback_timeout" translate="label tooltip comment" type="text" sortOrder="10" showInDefault="1" canRestore="1">
+                    <label>Fallback Timeout</label>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                    <tooltip><![CDATA[If the payment process is failed, change the order status after the specified time.]]></tooltip>
+                    <comment>Specify fallback timeout in minutes.</comment>
+                </field>
+                <field id="fallback_timeout_limit" translate="label tooltip comment" type="text" sortOrder="20" showInDefault="1" canRestore="1">
+                    <label>Fallback Timeout Limit</label>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                    <tooltip><![CDATA[If the payment process is failed, change the order status after the specified time in "Fallback Timeout" till the value specified in this field.<br/>In other words, the request will be executed during the specified time limit.]]></tooltip>
+                    <comment>Specify fallback timeout limit in hours.</comment>
+                </field>
+                <field id="cron_expr" sortOrder="30" type="text" showInDefault="1" translate="label comment" canRestore="1">
+                    <label>Schedule (Cron Syntax)</label>
+                    <comment><![CDATA[Default value: every 5 minutes. <a href="http://crontab.guru/" target="_blank">Need help?</a>]]></comment>
+                </field>
+            </group>
+            <group id="abandoned_orders" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                <label>Abandoned Orders</label>
+                <field id="waiting_time" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0" canRestore="1">
+                    <label>Waiting Time</label>
+                    <validate>validate-digits validate-zero-or-greater</validate>
+                    <comment><![CDATA[Auto cancellation of orders that are stuck in the payment review status after the specified time. The time is in minutes.]]></comment>
+                </field>
+                <field id="cron_expr" sortOrder="20" type="text" showInDefault="1" translate="label comment" canRestore="1">
+                    <label>Schedule (Cron Syntax)</label>
+                    <comment><![CDATA[<a href="http://crontab.guru/" target="_blank">Need help?</a>]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

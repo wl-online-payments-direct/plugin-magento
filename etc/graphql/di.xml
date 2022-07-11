@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData" xsi:type="array">
+                <item name="worldline_cc_vault_active" xsi:type="string">payment/worldline_cc_vault/active</item>
+                <item name="worldline_payment_credit_card_allowspecific" xsi:type="string">payment/worldline_cc/allowspecific</item>
+                <item name="worldline_payment_credit_card_specificcountry" xsi:type="string">payment/worldline_cc/specificcountry</item>
+                <item name="worldline_payment_hosted_checkout_allowspecific" xsi:type="string">payment/worldline_hosted_checkout/allowspecific</item>
+                <item name="worldline_payment_hosted_checkout_specificcountry" xsi:type="string">payment/worldline_hosted_checkout/specificcountry</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Cart\Payment\AdditionalDataProviderPool">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="worldline_cc" xsi:type="object">Worldline\Payment\Model\WorldlineDataProvider</item>
+                <item name="worldline_cc_vault" xsi:type="object">Worldline\Payment\Model\VaultDataProvider</item>
+                <item name="worldline_hosted_checkout_vault" xsi:type="object">Worldline\Payment\Model\VaultDataProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\VaultGraphQl\Model\Resolver\PaymentTokens">
+        <plugin sortOrder="100"
+                name="WorldlinePaymentGraphQlPaymentTokens"
+                type="Worldline\Payment\GraphQl\Plugin\Model\Resolver\PaymentTokens"/>
+    </type>
+</config>

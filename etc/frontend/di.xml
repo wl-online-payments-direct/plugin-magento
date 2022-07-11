@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Checkout\Model\CompositeConfigProvider">
+        <arguments>
+            <argument name="configProviders" xsi:type="array">
+                <item name="worldline_config_provider" xsi:type="object">Worldline\Payment\Model\Ui\CreditCard\ConfigProvider</item>
+                <item name="worldline_hosted_checkout_config_provider" xsi:type="object">Worldline\Payment\Model\Ui\HostedCheckout\ConfigProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Vault\Model\Ui\TokensConfigProvider">
+        <arguments>
+            <argument name="tokenUiComponentProviders" xsi:type="array">
+                <item name="worldline_cc" xsi:type="object">Worldline\Payment\Model\Ui\CreditCard\TokenUiComponentProvider</item>
+                <item name="worldline_hosted_checkout" xsi:type="object">Worldline\Payment\Model\Ui\HostedCheckout\TokenUiComponentProvider</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Checkout\Controller\Cart\Index">
+        <plugin sortOrder="100"
+                name="WorldlinePaymentCheckoutControllerCartIndex"
+                type="Worldline\Payment\Plugin\Checkout\Controller\Cart\Index"/>
+    </type>
+</config>

@@ -1,0 +1,39 @@
+<?php
+/**
+ * @var Worldline\Payment\Block\Info $block
+ */
+$specificInfo = $block->getSpecificInformation();
+$paymentTitle = $block->getMethod()->getConfigData('title', $block->getInfo()->getOrder()->getStoreId());
+?>
+<?= $block->escapeHtml($paymentTitle); ?>
+
+<?php if ($block->isWorldlinePayment()): ?>
+    <?php if ($block->getLast4Digits()): ?>
+        <span><?= $block->escapeHtml(__('ending')) ?></span> <?= $block->escapeHtml($block->getLast4Digits()); ?>
+    <?php endif; ?>
+
+    <?php if ($block->getIconUrl()): ?>
+        <img src="<?= $block->escapeHtmlAttr($block->getIconUrl()) ?>"
+             width="<?= $block->escapeHtmlAttr($block->getIconWidth()) ?>"
+             height="<?= $block->escapeHtmlAttr($block->getIconHeight()) ?>"
+             alt="<?= $block->escapeHtmlAttr($block->escapeHtml($block->getIconTitle())) ?>"
+        >
+    <?php endif; ?>
+<?php endif; ?>
+
+<?php if ($specificInfo): ?>
+    <table class="data-table admin__table-secondary">
+        <?php foreach ($specificInfo as $label => $value): ?>
+            <tr>
+                <th><?= $block->escapeHtml($label); ?>:</th>
+                <td>
+                    <?= /* @noEscape */ nl2br($block->escapeHtml(
+                        implode("\n", $block->getValueAsArray($value, true))
+                    )); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif;?>
+
+<?= /* @noEscape */ $block->getChildHtml(); ?>

@@ -1,0 +1,56 @@
+type Query {
+    getWorldlineConfig: WorldlineConfig @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\WorldlineConfig") @doc(description: "Retrieve config.")
+    checkRedirect(incrementId: String!): CheckRedirectOutput @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\Redirect") @doc(description: "Retrieve redirect status.")
+    processHosted(paymentId: String!, mac: String!): ProcessPaymentOutput @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\Hosted") @doc(description: "Process hosted checkout response.")
+    processCreditCard(paymentId: String!, mac: String!): ProcessPaymentOutput @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\CreditCardResult") @doc(description: "Process credit card response.")
+}
+
+type WorldlineConfig @doc(description:"Contains information.") {
+    url: String @doc(description:"URL for iFrame")
+    icons: [String] @doc(description:"List of enabled card types")
+}
+
+input PaymentMethodInput {
+    worldline_cc: WorldlineCcInput
+    worldline_cc_vault: WorldlineVaultInput
+    worldline_hosted_checkout_vault: WorldlineVaultInput
+}
+
+input WorldlineCcInput {
+    is_active_payment_token_enabler: Boolean! @doc(description:"States whether an entered by a customer credit/debit card should be tokenized for later usage. Required only if Vault is enabled for Worldline payment integration.")
+    hosted_tokenization_id: String @doc(description:"Contains a hosted tokenization id session provided by Worldline SDK and should be sent with sale transaction details to the Worldline payment gateway. ")
+}
+
+input WorldlineVaultInput {
+    public_hash: String!
+}
+
+type AvailablePaymentMethod {
+    icons: [IconDetailsOutput] @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\PaymentMethodIcons")
+}
+
+type IconDetailsOutput {
+    icon_title: String @doc(description: "Icon card type")
+    icon_url: String @doc(description: "Icon url")
+}
+
+type CheckRedirectOutput {
+    url: String
+}
+
+type PaymentToken {
+    token: String @doc(description:"Gateway Token")
+}
+
+type ProcessPaymentOutput {
+    result: String
+    orderIncrementId: String
+}
+
+type StoreConfig @doc(description: "The type contains information about a store config") {
+    worldline_cc_vault_active: String @doc(description: "Wordline cc vault status.")
+    worldline_payment_credit_card_allowspecific: Boolean @doc(description: "CC: Payment from Applicable Countries")
+    worldline_payment_credit_card_specificcountry: String @doc(description: "CC: Payment from Specific Countries")
+    worldline_payment_hosted_checkout_allowspecific: Boolean @doc(description: "HC: Payment from Applicable Countries")
+    worldline_payment_hosted_checkout_specificcountry: String @doc(description: "HC: Payment from Specific Countries")
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order_payment" resource="sales" engine="innodb" comment="Sales Flat Order Payment">
+        <column xsi:type="varchar" name="worldline_payment_id" nullable="true" length="255" comment="Worldline Payment ID"/>
+    </table>
+    <table name="worldline_payment_log" resource="default" engine="innodb" comment="Logs Table">
+        <column xsi:type="int" name="log_id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="blob" name="content" nullable="false" />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="log_id"/>
+        </constraint>
+    </table>
+</schema>
