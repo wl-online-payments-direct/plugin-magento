@@ -7,8 +7,8 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Worldline\Payment\Model\Ui\CreditCard\ConfigProvider as CCConfigProvider;
-use Worldline\Payment\Model\Ui\HostedCheckout\ConfigProvider as HCConfigProvider;
+use Worldline\Payment\CreditCard\UI\ConfigProvider as CCConfigProvider;
+use Worldline\Payment\HostedCheckout\UI\ConfigProvider as HCConfigProvider;
 use Worldline\Payment\Model\Ui\PaymentIconsProvider;
 
 class PaymentMethodIcons implements ResolverInterface

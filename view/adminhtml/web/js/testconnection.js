@@ -19,11 +19,14 @@ define([
 
         api_creds: {
             api_key: '',
+            api_key_prod: '',
             api_secret: '',
+            api_secret_prod: '',
             api_test_endpoint: '',
             api_prod_endpoint: '',
             environment_mode: '',
             merchant_id: '',
+            merchant_id_prod: ''
         },
 
         /**
@@ -58,6 +61,10 @@ define([
                 self = this,
                 msg = '',
                 fieldToCheck = this.options.fieldToCheck || 'success';
+
+            if (!$('#worldline_connection_connection').validate({errorClass: 'mage-error'}).form()) {
+                return;
+            }
 
             element.removeClass('success').addClass('fail');
             $.ajax({

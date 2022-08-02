@@ -11,10 +11,10 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Payment\Gateway\Config\Config as PaymentGatewayConfig;
 use Magento\Quote\Api\Data\CartInterface;
-use Worldline\Payment\Gateway\Config\Config as CcConfig;
-use Worldline\Payment\Gateway\Config\HostedCheckout\Config as HcConfig;
-use Worldline\Payment\Model\Ui\CreditCard\ConfigProvider as CcConfigProvider;
-use Worldline\Payment\Model\Ui\HostedCheckout\ConfigProvider as HcConfigProvider;
+use Worldline\Payment\CreditCard\Gateway\Config\Config as CcConfig;
+use Worldline\Payment\HostedCheckout\Gateway\Config\Config as HcConfig;
+use Worldline\Payment\HostedCheckout\UI\ConfigProvider as HcConfigProvider;
+use Worldline\Payment\CreditCard\UI\ConfigProvider as CcConfigProvider;
 
 class PaymentMethodIsActive implements ObserverInterface
 {

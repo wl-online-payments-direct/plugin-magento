@@ -19,7 +19,7 @@ class WebhookInfo extends Field
         $message = __('To retrieve the webhooks credentials, login to the Worldline Back Office.');
         $message .= '<br>';
         $message .= __(
-            'Go to Configuration > Technical information > Ingenico Direct settings > Webhooks Configuration'
+            'Go to Configuration > Technical information > API settings > Webhooks Configuration'
         );
         $message .= '<br>';
         $message .= __('and perform the following steps:');

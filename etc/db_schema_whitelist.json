@@ -13,5 +13,19 @@
         "constraint": {
             "PRIMARY": true
         }
+    },
+    "worldline_request_log": {
+        "column": {
+            "id": true,
+            "request_path": true,
+            "request_body": true,
+            "response_body": true,
+            "response_code": true,
+            "mark_as_processed": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
     }
 }

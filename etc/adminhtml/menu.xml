@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Worldline_Payment::general"
+             title="Worldline"
+             translate="title"
+             module="Worldline_Payment"
+             sortOrder="75"
+             parent="Magento_Backend::system"
+             dependsOnModule="Magento_AsynchronousOperations"
+             resource="Worldline_Payment::general"/>
+        <add id="Worldline_Payment::request_logs"
+             title="Request Logs"
+             translate="title"
+             module="Worldline_Payment"
+             sortOrder="10"
+             parent="Worldline_Payment::general"
+             action="worldline/system/RequestLogs"
+             resource="Worldline_Payment::request_logs"/>
+    </menu>
+</config>

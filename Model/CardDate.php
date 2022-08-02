@@ -15,9 +15,6 @@ class CardDate
      */
     private $serializer;
 
-    /**
-     * @param Json $serializer
-     */
     public function __construct(
         Json $serializer
     ) {

@@ -3,12 +3,12 @@
     <policies>
         <policy id="script-src">
             <values>
-                <value id="ingenico" type="host">https://payment.preprod.direct.ingenico.com</value>
+                <value id="ingenico" type="host">payment.preprod.direct.ingenico.com</value>
             </values>
         </policy>
         <policy id="frame-src">
             <values>
-                <value id="ingenico" type="host">https://payment.preprod.direct.ingenico.com</value>
+                <value id="ingenico" type="host">payment.preprod.direct.ingenico.com</value>
             </values>
         </policy>
     </policies>

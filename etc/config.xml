@@ -4,7 +4,7 @@
     <default>
         <payment>
             <worldline_cc>
-                <model>WorldlineFacade</model>
+                <model>Worldline\CreditCard\Model\Method\Adapter\Virtual</model>
                 <allow_specific_currency>0</allow_specific_currency>
                 <allow_specific_customer_group>0</allow_specific_customer_group>
                 <allowspecific>0</allowspecific>
@@ -39,13 +39,13 @@
                 <group>worldline_group</group>
             </worldline_cc>
             <worldline_cc_vault>
-                <model>WorldlineCreditCardVaultFacade</model>
+                <model>Worldline\CreditCard\Model\Method\Vault\CCVault\Virtual</model>
                 <active>0</active>
                 <title>Stored Cards (Worldline Online Payments)</title>
                 <group>worldline_group</group>
             </worldline_cc_vault>
             <worldline_hosted_checkout>
-                <model>WorldlineHostedCheckoutFacade</model>
+                <model>Worldline\HostedCheckout\Model\Method\Adapter\Virtual</model>
                 <allow_specific_currency>0</allow_specific_currency>
                 <allow_specific_customer_group>0</allow_specific_customer_group>
                 <allowspecific>0</allowspecific>
@@ -75,11 +75,11 @@
                 <vault>1</vault>
                 <authorization_mode>final</authorization_mode>
                 <group>worldline_group</group>
-                <cart_lines>0</cart_lines>
-                <can_initialize>1</can_initialize>
+                <cart_lines>1</cart_lines>
+                <skip_3d>0</skip_3d>
             </worldline_hosted_checkout>
             <worldline_hosted_checkout_vault>
-                <model>WorldlineHostedCheckoutVaultFacade</model>
+                <model>Worldline\HostedCheckout\Model\Method\Vault\CCVault\Virtual</model>
                 <active>1</active>
                 <title>Stored Cards (Worldline Online Payments)</title>
                 <group>worldline_group</group>
@@ -106,5 +106,10 @@
                 <cron_expr>* * * * *</cron_expr>
             </abandoned_orders>
         </worldline_order_status_updater>
+        <worldline_debug>
+            <general>
+                <logging_lifetime>14</logging_lifetime>
+            </general>
+        </worldline_debug>
     </default>
 </config>

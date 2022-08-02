@@ -3,14 +3,19 @@ declare(strict_types=1);
 
 namespace Worldline\Payment\Logger\Handler;
 
-use Magento\Framework\Filesystem\DriverInterface;
-use Magento\Framework\Logger\Handler\Base;
+use Magento\Framework\Filesystem\Driver\File;
+use Monolog\Formatter\LineFormatter;
 use Worldline\Payment\Api\Data\LogInterfaceFactory;
 use Worldline\Payment\Api\LogRepositoryInterface;
 use Worldline\Payment\Model\Log\Log;
 
-class Debug extends Base
+class Debug extends \Monolog\Handler\StreamHandler
 {
+    /**
+     * @var File
+     */
+    private $filesystem;
+
     /**
      * @var LogRepositoryInterface
      */
@@ -22,26 +27,37 @@ class Debug extends Base
     private $logFactory;
 
     public function __construct(
+        File $filesystem,
         LogRepositoryInterface $logRepository,
-        LogInterfaceFactory $logFactory,
-        DriverInterface $filesystem,
-        $filePath = null,
-        $fileName = null
+        LogInterfaceFactory $logFactory
     ) {
-        parent::__construct($filesystem, $filePath, $fileName);
+        $this->filesystem = $filesystem;
+        parent::__construct(BP . DIRECTORY_SEPARATOR . '/var/log/worldline/debug.log');
 
+        $this->setFormatter(new LineFormatter(null, null, true));
         $this->logRepository = $logRepository;
         $this->logFactory = $logFactory;
+    }
+
+    protected function write(array $record): void
+    {
+        $logDir = $this->filesystem->getParentDirectory($this->url);
+
+        if (!$this->filesystem->isDirectory($logDir)) {
+            $this->filesystem->createDirectory($logDir);
+        }
+
+        parent::write($record);
+
+        $this->saveLogToDb($record);
     }
 
     /**
      * @param array $record
      * @return void
      */
-    protected function write(array $record): void
+    private function saveLogToDb(array $record): void
     {
-        parent::write($record);
-
         $content = var_export($record, true);
         /** @var Log $log */
         $log = $this->logFactory->create();

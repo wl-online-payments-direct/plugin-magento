@@ -6,9 +6,16 @@ Realized payment methods:
 
 Change log:
 
+1.2.0
+- hosted checkout payment method improvements
+- show Worldline information in order overview pages: frontend and backend
+- add the Worldline request logs grid
+- compatibility with Magento 2.3.7
+- bug fix and general improvements
+
 1.1.0
 - PWA support
-- log worldline requests feature
+- log Worldline requests feature
 - support of new version of the SDK
 - compatibility with Magento 2.4.4
 - bug fix

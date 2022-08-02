@@ -33,13 +33,13 @@ class PaymentProvider
     }
 
     /**
-     * @param string $hostedCheckoutId
+     * @param string $worldlinePaymentId
      * @return OrderPaymentInterface|null
      */
-    public function getPayment(string $hostedCheckoutId): ?OrderPaymentInterface
+    public function getPayment(string $worldlinePaymentId): ?OrderPaymentInterface
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('worldline_payment_id', $hostedCheckoutId)
+            ->addFilter('worldline_payment_id', $worldlinePaymentId)
             ->create();
         $payment = $this->orderPaymentRepository->getList($searchCriteria)->getFirstItem();
 

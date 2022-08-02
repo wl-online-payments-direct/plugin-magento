@@ -8,8 +8,8 @@ use Magento\Sales\Api\Data\OrderPaymentInterface;
 use Magento\Sales\Api\OrderPaymentRepositoryInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Worldline\Payment\Model\ClientProvider;
+use Worldline\Payment\Model\Config\WorldlineConfig;
 use Worldline\Payment\Model\PaymentProvider;
-use Worldline\Payment\Model\WorldlineConfig;
 
 class CreditCardProcessor
 {

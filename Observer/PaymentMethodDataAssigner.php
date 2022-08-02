@@ -11,13 +11,14 @@ use Magento\Payment\Model\InfoInterface;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\PaymentInterface;
 use Magento\Sales\Api\Data\OrderPaymentInterface;
+use Worldline\Payment\CreditCard\Ui\ConfigProvider;
 use Worldline\Payment\Model\ClientProvider;
-use Worldline\Payment\Model\WorldlineConfig;
+use Worldline\Payment\Model\Config\WorldlineConfig;
 
 class PaymentMethodDataAssigner extends AbstractDataAssignObserver
 {
     /**
-     * @var WorldlineConfig
+     * @var \Worldline\Payment\Model\Config\WorldlineConfig
      */
     private $worldlineConfig;
 
@@ -65,7 +66,7 @@ class PaymentMethodDataAssigner extends AbstractDataAssignObserver
         }
 
         $payment = $this->readPaymentModelArgument($observer);
-        if ($payment->getMethod() == \Worldline\Payment\Model\Ui\CreditCard\ConfigProvider::CODE &&
+        if ($payment->getMethod() == ConfigProvider::CODE &&
             isset($additionalInformation['hosted_tokenization_id']) &&
             (
                 empty($payment->getAdditionalInformation('hosted_tokenization_id')) ||

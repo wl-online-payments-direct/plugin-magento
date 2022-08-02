@@ -10,6 +10,9 @@ use Magento\Framework\Module\Dir\Reader;
 use Magento\Framework\Module\PackageInfo;
 use Magento\Framework\Serialize\Serializer\Json as Serializer;
 
+/**
+ * @core
+ */
 class TrackerDataProvider
 {
     private const EXTENSION_NAME = 'Worldline_Payment';

@@ -11,7 +11,7 @@ use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Filter\StripTags;
 use Worldline\Payment\Model\ClientProvider;
-use Worldline\Payment\Model\WorldlineConfig;
+use Worldline\Payment\Model\Config\WorldlineConfig;
 
 class TestConnection extends Action
 {
@@ -33,7 +33,7 @@ class TestConnection extends Action
     private $tagFilter;
 
     /**
-     * @var WorldlineConfig
+     * @var \Worldline\Payment\Model\Config\WorldlineConfig
      */
     private $worldlineConfig;
 
@@ -41,7 +41,7 @@ class TestConnection extends Action
      * @param Context $context
      * @param ClientProvider $clientProvider
      * @param StripTags $tagFilter
-     * @param WorldlineConfig $worldlineConfig
+     * @param \Worldline\Payment\Model\Config\WorldlineConfig $worldlineConfig
      */
     public function __construct(
         Context $context,
@@ -81,19 +81,21 @@ class TestConnection extends Action
     /**
      * @return void
      */
-    private function initConfigParameters()
+    private function initConfigParameters(): void
     {
         $this->worldlineConfig->setApiEndpoint($this->getEndpoint());
 
-        $merchantId = $this->getRequest()->getParam('merchant_id');
+        $merchantId = $this->getRequest()->getParam('merchant_id') ?: $this->getRequest()->getParam('merchant_id_prod');
         $this->worldlineConfig->setMerchantId($merchantId);
 
-        $apiKey = trim($this->getRequest()->getParam('api_key'));
+        $apiKey = $this->getRequest()->getParam('api_key') ?: $this->getRequest()->getParam('api_key_prod');
+        $apiKey = trim($apiKey);
         if (!preg_match('/^[\*]+$/', $apiKey)) {
             $this->worldlineConfig->setApiKey($apiKey);
         }
 
-        $apiSecret = trim($this->getRequest()->getParam('api_secret'));
+        $apiSecret = $this->getRequest()->getParam('api_secret') ?: $this->getRequest()->getParam('api_secret_prod');
+        $apiSecret = trim($apiSecret);
         if (!preg_match('/^[\*]+$/', $apiSecret)) {
             $this->worldlineConfig->setApiSecret($apiSecret);
         }
