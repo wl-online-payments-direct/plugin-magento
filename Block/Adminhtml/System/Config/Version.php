@@ -7,6 +7,7 @@ namespace Worldline\Payment\Block\Adminhtml\System\Config;
 use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Module\PackageInfo;
 use Magento\Framework\Composer\MagentoComposerApplicationFactory;
 use Magento\Framework\Filesystem\DriverInterface;
@@ -78,23 +79,25 @@ class Version extends Field
      */
     private function getNewVersion(): ?string
     {
-        $packageName = $this->packageInfo->getPackageName(self::EXTENSION_NAME);
-
         try {
+            $packageName = $this->packageInfo->getPackageName(self::EXTENSION_NAME);
             $infoCommand = $this->magentoComposerApplicationFactory->createInfoCommand();
             define('STDIN', $this->driver->fileOpen("php://stdin", "r"));
             $result = $infoCommand->run($packageName);
-        } catch (\Exception $e) {
+        } catch (LocalizedException $exception) {
             return null;
         }
 
-        if (isset($result['new_versions']) && is_array($result['new_versions'])) {
-            $newVersion = current($result['new_versions']);
-            if ($newVersion) {
-                return $newVersion;
-            }
+        $newVersions = $result['new_versions'] ?? [];
+        if (!$newVersions) {
+            return null;
         }
 
-        return null;
+        rsort($newVersions);
+        $newVersions = array_filter($newVersions, function ($item) {
+            return strpos($item, 'dev') === false;
+        });
+
+        return current($newVersions) ?? null;
     }
 }

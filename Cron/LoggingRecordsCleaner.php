@@ -6,8 +6,9 @@ namespace Worldline\Payment\Cron;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Psr\Log\LoggerInterface;
+use Worldline\Payment\Logger\ResourceModel\RequestLog;
+use Worldline\Payment\Model\Config\WorldlineConfig;
 use Worldline\Payment\Model\Log\ResourceModel\Log;
-use Worldline\Payment\Model\WorldlineConfig;
 
 class LoggingRecordsCleaner
 {
@@ -34,29 +35,37 @@ class LoggingRecordsCleaner
     private $logger;
 
     /**
-     * @var WorldlineConfig
+     * @var \Worldline\Payment\Model\Config\WorldlineConfig
      */
     private $worldlineConfig;
+
+    /**
+     * @var RequestLog
+     */
+    private $requestLog;
 
     /**
      * @param Log $logResource
      * @param DateTime $dateTime
      * @param TimezoneInterface $timezone
      * @param LoggerInterface $logger
-     * @param WorldlineConfig $worldlineConfig
+     * @param \Worldline\Payment\Model\Config\WorldlineConfig $worldlineConfig
+     * @param RequestLog $requestLog
      */
     public function __construct(
         Log $logResource,
         DateTime $dateTime,
         TimezoneInterface $timezone,
         LoggerInterface $logger,
-        WorldlineConfig $worldlineConfig
+        WorldlineConfig $worldlineConfig,
+        RequestLog $requestLog
     ) {
         $this->logResource = $logResource;
         $this->dateTime = $dateTime;
         $this->timezone = $timezone;
         $this->logger = $logger;
         $this->worldlineConfig = $worldlineConfig;
+        $this->requestLog = $requestLog;
     }
 
     /**
@@ -70,10 +79,11 @@ class LoggingRecordsCleaner
         }
 
         $offset = (int)$days * self::SEC_IN_DAY;
-        $date = $this->dateTime->formatDate($this->timezone->scopeTimeStamp() + $offset);
+        $date = $this->dateTime->formatDate($this->timezone->scopeTimeStamp() - $offset);
 
         try {
             $this->logResource->clearRecordsByDate($date);
+            $this->requestLog->clearRecordsByDate($date);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }

@@ -14,6 +14,11 @@
                         </resource>
                     </resource>
                 </resource>
+                <resource id="Magento_Backend::system">
+                    <resource id="Worldline_Payment::general" title="Worldline" translate="title" sortOrder="75">
+                        <resource id="Worldline_Payment::request_logs" title="Request Logs" translate="title" sortOrder="10"/>
+                    </resource>
+                </resource>
             </resource>
         </resources>
     </acl>

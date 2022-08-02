@@ -5,12 +5,24 @@
     <table name="sales_order_payment" resource="sales" engine="innodb" comment="Sales Flat Order Payment">
         <column xsi:type="varchar" name="worldline_payment_id" nullable="true" length="255" comment="Worldline Payment ID"/>
     </table>
-    <table name="worldline_payment_log" resource="default" engine="innodb" comment="Logs Table">
+    <table name="worldline_payment_log" resource="default" engine="innodb" comment="Worldline Payment Logs Table">
         <column xsi:type="int" name="log_id" unsigned="true" nullable="false" identity="true" />
         <column xsi:type="blob" name="content" nullable="false" />
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="log_id"/>
+        </constraint>
+    </table>
+    <table name="worldline_request_log" resource="default" engine="innodb" comment="Worldline Request Log Table">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" />
+        <column xsi:type="varchar" name="request_path" />
+        <column xsi:type="text" name="request_body" />
+        <column xsi:type="text" name="response_body" />
+        <column xsi:type="smallint" name="response_code" />
+        <column xsi:type="smallint" name="mark_as_processed" default="0"/>
+        <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
         </constraint>
     </table>
 </schema>

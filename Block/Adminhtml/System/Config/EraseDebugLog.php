@@ -28,7 +28,7 @@ class EraseDebugLog extends Field
     protected function _prepareLayout(): EraseDebugLog
     {
         parent::_prepareLayout();
-        $this->setTemplate('Worldline_Payment::config/form/field/erasedebuglog.phtml');
+        $this->setTemplate('Worldline_Payment::config/form/field/erase_debug_log.phtml');
         return $this;
     }
 

@@ -3,9 +3,8 @@
  * @var Worldline\Payment\Block\Info $block
  */
 $specificInfo = $block->getSpecificInformation();
-$paymentTitle = $block->getMethod()->getConfigData('title', $block->getInfo()->getOrder()->getStoreId());
 ?>
-<?= $block->escapeHtml($paymentTitle); ?>
+<?= $block->escapeHtml($block->getPaymentTitle()); ?>
 
 <?php if ($block->isWorldlinePayment()): ?>
     <?php if ($block->getLast4Digits()): ?>
@@ -14,8 +13,8 @@ $paymentTitle = $block->getMethod()->getConfigData('title', $block->getInfo()->g
 
     <?php if ($block->getIconUrl()): ?>
         <img src="<?= $block->escapeHtmlAttr($block->getIconUrl()) ?>"
-             width="<?= $block->escapeHtmlAttr($block->getIconWidth()) ?>"
-             height="<?= $block->escapeHtmlAttr($block->getIconHeight()) ?>"
+             style="max-height: <?= $block->escapeHtmlAttr($block->getMaxHeight()) ?>;
+                    aspect-ratio: <?= $block->escapeHtmlAttr($block->getAspectRatio()) ?>;"
              alt="<?= $block->escapeHtmlAttr($block->escapeHtml($block->getIconTitle())) ?>"
         >
     <?php endif; ?>

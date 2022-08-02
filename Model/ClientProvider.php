@@ -8,9 +8,13 @@ use Exception;
 use OnlinePayments\Sdk\Client as IngenicoSdkClient;
 use OnlinePayments\Sdk\ClientFactory;
 use OnlinePayments\Sdk\CommunicatorConfigurationFactory;
+use Worldline\Payment\Model\Config\WorldlineConfig;
 use Worldline\Payment\OnlinePayments\Sdk\Communicator;
 use Worldline\Payment\OnlinePayments\Sdk\CommunicatorFactory;
 
+/**
+ * @core
+ */
 class ClientProvider
 {
     /**

@@ -6,8 +6,8 @@ namespace Worldline\Payment\Block\Customer;
 
 use Magento\Vault\Api\Data\PaymentTokenInterface;
 use Magento\Vault\Block\AbstractCardRenderer;
-use Worldline\Payment\Model\Ui\CreditCard\ConfigProvider as CcConfigProvider;
-use Worldline\Payment\Model\Ui\HostedCheckout\ConfigProvider as HcConfigProvider;
+use Worldline\Payment\CreditCard\UI\ConfigProvider as CcConfigProvider;
+use Worldline\Payment\HostedCheckout\UI\ConfigProvider as HcConfigProvider;
 
 class CardRenderer extends AbstractCardRenderer
 {

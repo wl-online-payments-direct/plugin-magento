@@ -1,8 +1,8 @@
 type Query {
-    getWorldlineConfig: WorldlineConfig @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\WorldlineConfig") @doc(description: "Retrieve config.")
+    getWorldlineConfig: WorldlineConfig @resolver(class: "\\Worldline\\Payment\\CreditCard\\GraphQl\\Resolver\\WorldlineConfig") @doc(description: "Retrieve config.")
     checkRedirect(incrementId: String!): CheckRedirectOutput @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\Redirect") @doc(description: "Retrieve redirect status.")
-    processHosted(paymentId: String!, mac: String!): ProcessPaymentOutput @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\Hosted") @doc(description: "Process hosted checkout response.")
-    processCreditCard(paymentId: String!, mac: String!): ProcessPaymentOutput @resolver(class: "\\Worldline\\Payment\\GraphQl\\Model\\Resolver\\CreditCardResult") @doc(description: "Process credit card response.")
+    processCCResult(paymentId: String!, mac: String!): ProcessPaymentResultOutput @resolver(class: "\\Worldline\\Payment\\CreditCard\\GraphQl\\Resolver\\RequestResult") @doc(description: "Process credit card response.")
+    processHCResult(paymentId: String!, mac: String!): ProcessPaymentResultOutput @resolver(class: "\\Worldline\\Payment\\HostedCheckout\\GraphQl\\Resolver\\RequestResult") @doc(description: "Process hosted checkout response.")
 }
 
 type WorldlineConfig @doc(description:"Contains information.") {
@@ -42,7 +42,7 @@ type PaymentToken {
     token: String @doc(description:"Gateway Token")
 }
 
-type ProcessPaymentOutput {
+type ProcessPaymentResultOutput {
     result: String
     orderIncrementId: String
 }
@@ -53,4 +53,21 @@ type StoreConfig @doc(description: "The type contains information about a store 
     worldline_payment_credit_card_specificcountry: String @doc(description: "CC: Payment from Specific Countries")
     worldline_payment_hosted_checkout_allowspecific: Boolean @doc(description: "HC: Payment from Applicable Countries")
     worldline_payment_hosted_checkout_specificcountry: String @doc(description: "HC: Payment from Specific Countries")
+}
+
+type Mutation {
+    processHCRedirectRequest(input: ProcessHCRedirectRequestInput): ProcessPaymentRedirectOutput @resolver(class: "\\Worldline\\Payment\\HostedCheckout\\GraphQl\\Resolver\\RequestRedirect") @doc(description: "Process hosted checkout redirect request.")
+}
+
+input ProcessHCRedirectRequestInput @doc(description: "Defines the input to run the processHCRedirectRequest mutation") {
+    cart_id: String! @doc(description: "The unique ID of a `Cart` object.")
+    payment_method: PaymentMethodHCRedirectInput! @doc(description: "The payment method data.")
+}
+
+input PaymentMethodHCRedirectInput {
+    code: String! @doc(description: "The internal name for the payment method.")
+}
+
+type ProcessPaymentRedirectOutput {
+    redirect_url: String
 }

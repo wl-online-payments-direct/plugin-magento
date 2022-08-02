@@ -12,10 +12,10 @@ use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+use OnlinePayments\Sdk\Domain\WebhooksEvent;
 use Psr\Log\LoggerInterface;
-use Worldline\Payment\Webhook\Validator;
-use Worldline\Payment\Webhook\WebhookProcessor;
+use Worldline\Payment\Model\Webhook\RequestProcessor;
+use Worldline\Payment\Model\Webhook\GeneralProcessor;
 
 class Index implements CsrfAwareActionInterface, HttpPostActionInterface
 {
@@ -35,53 +35,36 @@ class Index implements CsrfAwareActionInterface, HttpPostActionInterface
     private $logger;
 
     /**
-     * @var JsonSerializer
+     * @var RequestProcessor
      */
-    private $jsonSerializer;
+    private $requestProcessor;
 
     /**
-     * @var Validator
-     */
-    private $validator;
-
-    /**
-     * @var WebhookProcessor
+     * @var GeneralProcessor
      */
     private $webhookProcessor;
 
-    /**
-     * @param RequestInterface $request
-     * @param ResultFactory $resultFactory
-     * @param LoggerInterface $logger
-     * @param JsonSerializer $jsonSerializer
-     * @param Validator $validator
-     * @param WebhookProcessor $webhookProcessor
-     */
     public function __construct(
         RequestInterface $request,
         ResultFactory $resultFactory,
         LoggerInterface $logger,
-        JsonSerializer $jsonSerializer,
-        Validator $validator,
-        WebhookProcessor $webhookProcessor
+        RequestProcessor $requestProcessor,
+        GeneralProcessor $webhookProcessor
     ) {
         $this->request = $request;
         $this->resultFactory = $resultFactory;
         $this->logger = $logger;
-        $this->jsonSerializer = $jsonSerializer;
-        $this->validator = $validator;
+        $this->requestProcessor = $requestProcessor;
         $this->webhookProcessor = $webhookProcessor;
     }
 
-    /**
-     * @return ResultInterface
-     */
     public function execute(): ResultInterface
     {
         /** @var Json $resultPage */
         $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
+        $webhookEvent = $this->getWebhookEvent();
 
-        if (!$this->isAuthorized()) {
+        if (!$webhookEvent instanceof WebhooksEvent) {
             $this->logger->info('authorization is not valid');
             return $resultJson;
         }
@@ -91,7 +74,7 @@ class Index implements CsrfAwareActionInterface, HttpPostActionInterface
         if ($this->request->isPost()) {
             $this->logger->info('content: ' . $this->request->getContent());
             try {
-                $this->webhookProcessor->process($this->jsonSerializer->unserialize($this->request->getContent()));
+                $this->webhookProcessor->process($webhookEvent);
             } catch (LocalizedException $exception) {
                 $this->logger->error($exception->getMessage());
                 $errorMessages = $exception->getMessage();
@@ -111,12 +94,9 @@ class Index implements CsrfAwareActionInterface, HttpPostActionInterface
         return $resultJson;
     }
 
-    /**
-     * @return bool
-     */
-    private function isAuthorized(): bool
+    private function getWebhookEvent(): ?WebhooksEvent
     {
-        return $this->validator->isAuthorized(
+        return $this->requestProcessor->getWebhookEvent(
             (string) $this->request->getContent(),
             (string) $this->request->getHeader('X-Gcs-Signature'),
             (string) $this->request->getHeader('X-Gcs-Keyid')

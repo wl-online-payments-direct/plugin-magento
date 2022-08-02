@@ -8,6 +8,7 @@ use Magento\Framework\Filesystem\DriverInterface;
 use Magento\Framework\View\Asset\Source;
 use Magento\Payment\Model\CcConfigProvider as Origin;
 use Worldline\Payment\Model\Ui\PaymentIconsProvider;
+use Worldline\Payment\Model\Ui\PaymentProductsProvider;
 
 class CcConfigProvider
 {
@@ -61,11 +62,12 @@ class CcConfigProvider
                 list($width, $height) = getimagesizefromstring(
                     $this->filesystem->fileGetContents($asset->getSourceFile())
                 );
+                $title = PaymentProductsProvider::PAYMENT_PRODUCTS[130]['label'];
                 $result['CB'] = [
                     'url' => $asset->getUrl(),
                     'width' => $width,
                     'height' => $height,
-                    'title' => __('Carte Bancaire')
+                    'title' => __($title)
                 ];
             }
         }

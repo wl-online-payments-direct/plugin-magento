@@ -10,12 +10,14 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\View\Asset\File;
 use Magento\Framework\View\Asset\Repository;
 use Magento\Framework\View\Asset\Source as AssetSource;
-use Worldline\Payment\Gateway\Config\Config;
+use Worldline\Payment\CreditCard\Gateway\Config\Config;
 use Worldline\Payment\Model\Config\Source\CreditCardTypeOptions;
-use Worldline\Payment\Model\PaymentProductsProvider;
 
 class PaymentIconsProvider
 {
+    public const REGEXP_ATTR_VIEWBOX =
+        '/viewBox=[\'"](?<startX>\d+) (?<startY>\d+) (?<width>[\d\.]+) (?<height>[\d\.]+)[\'"]/i';
+
     /**
      * @var PaymentProductsProvider
      */
@@ -51,14 +53,6 @@ class PaymentIconsProvider
      */
     private $cCoptions;
 
-    /**
-     * @param PaymentProductsProvider $paymentProductsProvider
-     * @param Repository $assetRepo
-     * @param RequestInterface $request
-     * @param AssetSource $assetSource
-     * @param Config $cCconfig
-     * @param CreditCardTypeOptions $cCoptions
-     */
     public function __construct(
         PaymentProductsProvider $paymentProductsProvider,
         Repository $assetRepo,
@@ -75,10 +69,6 @@ class PaymentIconsProvider
         $this->cCoptions = $cCoptions;
     }
 
-    /**
-     * @param int|null $storeId
-     * @return array
-     */
     public function getIcons(?int $storeId = null): array
     {
         if (!empty($this->icons)) {
@@ -87,31 +77,44 @@ class PaymentIconsProvider
 
         $paymentProducts = $this->paymentProductsProvider->getPaymentProducts($storeId);
         foreach ($paymentProducts as $paymentProductId => $paymentProductData) {
-            $asset = $this->createAsset(
-                'Worldline_Payment::images/pm/pp_logo_' . $paymentProductId . '.svg',
-                [Area::PARAM_AREA => Area::AREA_FRONTEND]
-            );
-            $placeholder = $this->assetSource->findSource($asset);
-            if ($placeholder) {
-                list($width, $height) = getimagesize($asset->getSourceFile());
-                $this->icons[$paymentProductId] = [
-                    'url' => $asset->getUrl(),
-                    'width' => $width,
-                    'height' => $height,
-                    'title' => $paymentProductData['label'],
-                    'method' => $paymentProductData['method']
-                ];
-            }
+            $this->generateIconById($paymentProductId, $storeId, $paymentProductData);
         }
 
         return $this->icons;
     }
 
-    /**
-     * @param array|null $typesFilter
-     * @param int|null $storeId
-     * @return array
-     */
+    public function getIconById(int $id, ?int $storeId = null): array
+    {
+        if (empty($this->getIcons()[$id])) {
+            $this->generateIconById($id, $storeId);
+        }
+
+        return $this->icons[$id] ?? [];
+    }
+
+    private function generateIconById(int $id, ?int $storeId = null, ?array $data = null): void
+    {
+        if (empty($data)) {
+            $data = $this->paymentProductsProvider->getPaymentProducts($storeId)[$id] ?? [];
+        }
+
+        $asset = $this->createAsset(
+            'Worldline_Payment::images/pm/pp_logo_' . $id . '.svg',
+            [Area::PARAM_AREA => Area::AREA_FRONTEND]
+        );
+        $placeholder = $this->assetSource->findSource($asset);
+        if ($placeholder) {
+            list($width, $height) = $this->getDimensions($asset);
+            $this->icons[$id] = [
+                'url' => $asset->getUrl(),
+                'width' => $width,
+                'height' => $height,
+                'title' => $data['label'],
+                'method' => $data['method']
+            ];
+        }
+    }
+
     public function getFilteredIcons(?array $typesFilter = [], ?int $storeId = null): array
     {
         if (empty($typesFilter)) {
@@ -128,10 +131,6 @@ class PaymentIconsProvider
         return $icons;
     }
 
-    /**
-     * @param int|null $storeId
-     * @return array
-     */
     public function getCcIcons(?int $storeId = null): array
     {
         $cCTypes = explode(',', $this->cCconfig->getCcTypes($storeId));
@@ -148,7 +147,7 @@ class PaymentIconsProvider
             );
             $placeholder = $this->assetSource->findSource($asset);
             if ($placeholder) {
-                list($width, $height) = getimagesize($asset->getSourceFile());
+                list($width, $height) = $this->getDimensions($asset);
                 $icons[$cCType] = [
                     'url' => $asset->getUrl(),
                     'width' => $width,
@@ -161,9 +160,6 @@ class PaymentIconsProvider
         return $icons;
     }
 
-    /**
-     * @return array
-     */
     public function getCcLabels(): array
     {
         $labels = [];
@@ -176,10 +172,6 @@ class PaymentIconsProvider
 
     /**
      * Create a file asset that's subject of fallback system.
-     *
-     * @param string $fileId
-     * @param array $params
-     * @return File
      */
     public function createAsset(string $fileId, array $params = []): ?File
     {
@@ -191,5 +183,29 @@ class PaymentIconsProvider
         }
 
         return $result;
+    }
+
+    private function getDimensions(?File $asset = null): array
+    {
+        if ($asset === null) {
+            return [0, 0];
+        }
+
+        if ($this->isSvg($asset)) {
+            preg_match(self::REGEXP_ATTR_VIEWBOX, $asset->getContent(), $viewBox);
+            $width = (int) $viewBox['width'];
+            $height = (int) $viewBox['height'];
+        } else {
+            $size = getimagesizefromstring($asset->getContent());
+            $width = (int) $size[0];
+            $height = (int) $size[1];
+        }
+
+        return [$width, $height];
+    }
+
+    private function isSvg(File $asset): bool
+    {
+        return (bool)preg_match('/\.svg$/i', $asset->getSourceFile());
     }
 }

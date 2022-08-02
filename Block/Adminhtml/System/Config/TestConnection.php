@@ -8,7 +8,6 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Serialize\Serializer\Json;
-use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 class TestConnection extends Field
 {
@@ -17,19 +16,12 @@ class TestConnection extends Field
      */
     private $serializer;
 
-    /**
-     * @param Context $context
-     * @param Json $serializer
-     * @param array $data
-     * @param SecureHtmlRenderer|null $secureRenderer
-     */
     public function __construct(
         Context $context,
         Json $serializer,
-        array $data = [],
-        ?SecureHtmlRenderer $secureRenderer = null
+        array $data = []
     ) {
-        parent::__construct($context, $data, $secureRenderer);
+        parent::__construct($context, $data);
         $this->serializer = $serializer;
     }
 
@@ -82,11 +74,14 @@ class TestConnection extends Field
     {
         return [
             'api_key' => 'worldline_connection_connection_api_key',
+            'api_key_prod' => 'worldline_connection_connection_api_key_prod',
             'api_secret' => 'worldline_connection_connection_api_secret',
+            'api_secret_prod' => 'worldline_connection_connection_api_secret_prod',
             'api_test_endpoint' => 'worldline_connection_connection_testing_api_url',
             'api_prod_endpoint' => 'worldline_connection_connection_production_api_url',
             'environment_mode' => 'worldline_connection_connection_environment_mode',
-            'merchant_id' => 'worldline_connection_connection_merchant_id'
+            'merchant_id' => 'worldline_connection_connection_merchant_id',
+            'merchant_id_prod' => 'worldline_connection_connection_merchant_id_prod'
         ];
     }
 }

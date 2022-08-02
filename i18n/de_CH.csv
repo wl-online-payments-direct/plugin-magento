@@ -44,7 +44,7 @@
 "For extension support, please, visit the <a href=""%1"" target=""_blank"">support site</a>.","Erweiterten Support finden Sie auf unserer <a href=""%1"" target=""_blank"">Support-Website</a>."
 "General Information","Allgemeine Informationen"
 "General","Allgemeines"
-"Go to Configuration > Technical information > Ingenico Direct settings > Webhooks Configuration","Gehen Sie zu Konfiguration > Technische Informationen > Ingenico Direct Einstellungen > Webhooks-Konfiguration"
+"Go to Configuration > Technical information > API settings > Webhooks Configuration","Gehen Sie zu Konfiguration > Technische Informationen > API Einstellungen > Webhooks-Konfiguration"
 "Hosted Checkout (Redirect to Worldline)","Gehosteter Checkout"
 "HTML Template ID","HTML-Vorlagen-ID"
 "If the payment process is failed, change the order status after the specified time in ""Fallback Timeout"" till the value specified in this field.<br/>In other words, the request will be executed during the specified time limit.","Wenn das Zahlungsverfahren fehlgeschlagen ist, ändert sich der Auftragsstatus nach der in „Fallback-Timeout“ angegebenen Zeit bis zu dem in diesem Feld angegebenen Wert.<br/>Mit anderen Worten: Die Anfrage wird innerhalb des angegebenen Zeitlimits ausgeführt."
@@ -120,3 +120,4 @@
 "WorldLine refund has failed. Please contact the provider.","WorldLine-Erstattung ist fehlgeschlagen. Bitte kontaktieren Sie den Anbieter."
 "Yes","Ja"
 "Your payment couldn't be completed, please try again","Ihre Zahlung konnte nicht abgeschlossen werden, bitte versuchen Sie es erneut"
+"Please use one of the following extensions : html, htm, dhtml","Bitte verwenden Sie eine der folgenden Erweiterungen : html, htm, dhtml"

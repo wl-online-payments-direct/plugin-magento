@@ -12,7 +12,7 @@ define([
         rendererList.push(
             {
                 type: ccType,
-                component: 'Worldline_Payment/js/view/payment/method-renderer/worldlinecc-method'
+                component: 'Worldline_Payment/js/view/credit-card/worldlinecc-method'
             }
         );
     }
@@ -21,7 +21,7 @@ define([
         rendererList.push(
             {
                 type: hcType,
-                component: 'Worldline_Payment/js/view/payment/method-renderer/worldlinehc-method'
+                component: 'Worldline_Payment/js/view/hosted-checkout/worldlinehc-method'
             }
         );
     }
