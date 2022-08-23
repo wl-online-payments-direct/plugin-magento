@@ -7,7 +7,6 @@ namespace Worldline\Payment\Model\Webhook;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\Data\CartInterface;
 use OnlinePayments\Sdk\Domain\WebhooksEvent;
-use Worldline\Payment\Api\WebhookProcessorInterface;
 
 interface ProcessorInterface
 {

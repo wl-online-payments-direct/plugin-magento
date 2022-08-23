@@ -7,7 +7,6 @@ namespace Worldline\Payment\HostedCheckout\Webhook;
 use Magento\Quote\Model\QuoteManagement;
 use Magento\Sales\Model\OrderFactory;
 use OnlinePayments\Sdk\Domain\WebhooksEvent;
-use Worldline\Payment\Api\WebhookProcessorInterface;
 use Worldline\Payment\HostedCheckout\Vault\VaultRepository;
 use Worldline\Payment\Model\Webhook\ProcessorInterface;
 
