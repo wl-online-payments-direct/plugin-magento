@@ -83,7 +83,7 @@ class PaymentIconsProvider
         return $this->icons;
     }
 
-    public function getIconById(int $id, ?int $storeId = null): array
+    public function getIconById(?int $id, ?int $storeId = null): array
     {
         if (empty($this->getIcons()[$id])) {
             $this->generateIconById($id, $storeId);
@@ -92,7 +92,7 @@ class PaymentIconsProvider
         return $this->icons[$id] ?? [];
     }
 
-    private function generateIconById(int $id, ?int $storeId = null, ?array $data = null): void
+    private function generateIconById(?int $id, ?int $storeId = null, ?array $data = null): void
     {
         if (empty($data)) {
             $data = $this->paymentProductsProvider->getPaymentProducts($storeId)[$id] ?? [];

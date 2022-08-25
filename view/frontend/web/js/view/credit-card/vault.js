@@ -3,11 +3,22 @@
 define([
     'jquery',
     'Magento_Vault/js/view/payment/method-renderer/vault',
-    'Magento_Checkout/js/action/place-order',
-    'Magento_Checkout/js/action/redirect-on-success',
+    'Worldline_Payment/js/view/credit-card/create-payment',
     'Worldline_Payment/js/model/device-data',
-    'Worldline_Payment/js/model/message-manager'
-], function ($, VaultComponent, placeOrderAction, redirectOnSuccessAction, deviceData, messageManager) {
+    'Worldline_Payment/js/model/message-manager',
+    'Magento_Ui/js/modal/alert',
+    'Magento_Checkout/js/model/full-screen-loader',
+    'mage/url'
+], function (
+    $,
+    VaultComponent,
+    placeOrderAction,
+    deviceData,
+    messageManager,
+    alert,
+    fullScreenLoader,
+    urlBuilder
+) {
     'use strict';
 
     return VaultComponent.extend({
@@ -103,33 +114,7 @@ define([
                 this.tokenizer.submitTokenization()
                     .then((result) => {
                         if (result.success) {
-                            $.when(
-                                placeOrderAction(self.getData(result.hostedTokenizationId), self.messageContainer)
-                            ).done(
-                                function(orderId) {
-                                    $.when(
-                                        self.checkRedirect(orderId)
-                                    ).done(
-                                        function (data) {
-                                            if (!data || (data.url == null)) {
-                                                self.afterPlaceOrder.bind(self);
-                                                if (self.redirectAfterPlaceOrder) {
-                                                    redirectOnSuccessAction.execute();
-                                                }
-                                            } else {
-                                                window.location.replace(data.url);
-                                            }
-                                        }
-                                    )
-                                }
-                            ).fail(
-                                function () {}
-                            ).always(
-                                function () {
-                                    self.isPlaceOrderActionAllowed(true);
-                                }
-                            );
-
+                            self.createPayment(result);
                             return true;
                         }
 
@@ -148,15 +133,57 @@ define([
             return false;
         },
 
-        checkRedirect: function (orderId) {
+        createPayment: function (result) {
+            let self = this;
+
+            $.when(
+                placeOrderAction(this.getData(result.hostedTokenizationId), this.messageContainer)
+            ).done(
+                function (returnUrl) {
+                    if (returnUrl) {
+                        window.location.replace(returnUrl);
+                    } else {
+                        fullScreenLoader.startLoader();
+                        setTimeout(() => {
+                            self.redirectToSuccess(result.hostedTokenizationId);
+                        }, 3000)
+                    }
+                }
+            ).fail(
+                function () {
+                    let msg = $.mage.__('Your payment couldn\'t be completed, please try again');
+                    alert({
+                        content: msg,
+                        actions: {
+                            always: function () {
+                                $('div-hosted-tokenization').empty();
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            ).always(
+                function () {
+                    self.isPlaceOrderActionAllowed(true);
+                }
+            );
+
+            return true;
+        },
+
+        redirectToSuccess: function (hostedTokenizationId) {
             return $.ajax({
                 method: "GET",
-                url: "/worldline/payment/redirect",
+                url: urlBuilder.build("worldline/CreditCard/ReturnUrl"),
                 contentType: "application/json",
                 data: {
-                    id: orderId
+                    hosted_tokenization_id: hostedTokenizationId
                 },
-            })
+            }).done($.proxy(function (data) {
+                if (data.url) {
+                    window.location.replace(data.url);
+                }
+            }, this));
         }
     });
 });

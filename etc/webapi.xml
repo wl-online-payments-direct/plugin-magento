@@ -1,14 +1,32 @@
 <?xml version="1.0"?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
-    <!-- HOSTED CHECKOUT: get redirect url -->
-    <route url="/V1/guest-carts/:cartId/hosted-checkout-redirect" method="POST">
+    <!-- CREDIT CARD: create payment -->
+    <route url="/V1/guest-carts/:cartId/worldline/credit-card" method="POST">
+        <service class="Worldline\Payment\Api\CreditCard\CreatePaymentManagementInterface" method="createGuestRequest"/>
+        <resources>
+            <resource ref="anonymous" />
+        </resources>
+    </route>
+    <route url="/V1/carts/mine/worldline/credit-card" method="POST">
+        <service class="Worldline\Payment\Api\CreditCard\CreatePaymentManagementInterface" method="createRequest"/>
+        <resources>
+            <resource ref="self" />
+        </resources>
+        <data>
+            <parameter name="cartId" force="true">%cart_id%</parameter>
+        </data>
+    </route>
+    <!-- CREDIT CARD: create payment -->
+
+    <!-- CREDIT CARD: get redirect url -->
+    <route url="/V1/guest-carts/:cartId/worldline/hosted-checkout-redirect" method="POST">
         <service class="Worldline\Payment\Api\HostedCheckout\RedirectManagementInterface" method="processGuestRedirectRequest"/>
         <resources>
             <resource ref="anonymous" />
         </resources>
     </route>
-    <route url="/V1/carts/mine/hosted-checkout-redirect" method="POST">
+    <route url="/V1/carts/mine/worldline/hosted-checkout-redirect" method="POST">
         <service class="Worldline\Payment\Api\HostedCheckout\RedirectManagementInterface" method="processRedirectRequest"/>
         <resources>
             <resource ref="self" />

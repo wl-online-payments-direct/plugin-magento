@@ -25,6 +25,9 @@ class Config extends PaymentGatewayConfig
     public const KEY_CART_LINES = 'cart_lines';
     public const SKIP_3D = 'skip_3d';
 
+    public const DIRECT_DEBIT_RECURRENCE_TYPE = 'direct_debit_recurrence_type';
+    public const DIRECT_DEBIT_SIGNATURE_TYPE = 'direct_debit_signature_type';
+
     /**
      * @var UrlInterface
      */
@@ -42,7 +45,7 @@ class Config extends PaymentGatewayConfig
         $methodCode = null,
         $pathPattern = PaymentGatewayConfig::DEFAULT_PATH_PATTERN
     ) {
-        PaymentGatewayConfig::__construct($scopeConfig, $methodCode, $pathPattern);
+        parent::__construct($scopeConfig, $methodCode, $pathPattern);
         $this->urlBuilder = $urlBuilder;
         $this->appState = $appState;
     }
@@ -95,5 +98,15 @@ class Config extends PaymentGatewayConfig
     public function hasSkipAuthentication(?int $storeId = null): bool
     {
         return (bool) $this->getValue(self::SKIP_3D, $storeId);
+    }
+
+    public function getDirectDebitRecurrenceType(?int $storeId = null): string
+    {
+        return (string) $this->getValue(self::DIRECT_DEBIT_RECURRENCE_TYPE, $storeId);
+    }
+
+    public function getDirectDebitSignatureType(?int $storeId = null): string
+    {
+        return (string) $this->getValue(self::DIRECT_DEBIT_SIGNATURE_TYPE, $storeId);
     }
 }

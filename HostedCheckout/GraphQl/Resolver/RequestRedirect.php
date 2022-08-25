@@ -7,8 +7,8 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Magento\Quote\Api\Data\PaymentInterfaceFactory;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
+use Magento\QuoteGraphQl\Model\Cart\Payment\AdditionalDataProviderPool;
 use Worldline\Payment\Api\HostedCheckout\RedirectManagementInterface;
 
 class RequestRedirect implements ResolverInterface
@@ -19,23 +19,23 @@ class RequestRedirect implements ResolverInterface
     private $getCartForUser;
 
     /**
-     * @var PaymentInterfaceFactory
-     */
-    private $paymentFactory;
-
-    /**
      * @var RedirectManagementInterface
      */
     private $redirectManagement;
 
+    /**
+     * @var AdditionalDataProviderPool
+     */
+    private $additionalDataProviderPool;
+
     public function __construct(
         GetCartForUser $getCartForUser,
-        PaymentInterfaceFactory $paymentFactory,
-        RedirectManagementInterface $redirectManagement
+        RedirectManagementInterface $redirectManagement,
+        AdditionalDataProviderPool $additionalDataProviderPool
     ) {
         $this->getCartForUser = $getCartForUser;
-        $this->paymentFactory = $paymentFactory;
         $this->redirectManagement = $redirectManagement;
+        $this->additionalDataProviderPool = $additionalDataProviderPool;
     }
 
     /**
@@ -55,15 +55,20 @@ class RequestRedirect implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing.'));
         }
 
-        if (empty($args['input']['payment_method']['code'])) {
+        $code = $args['input']['payment_method']['code'];
+        if (!($code)) {
             throw new GraphQlInputException(__('Required parameter "code" for "payment_method" is missing.'));
         }
 
         $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
         $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+        $payment = $cart->getPayment();
 
-        $payment = $this->paymentFactory->create();
-        $payment->setMethod($args['input']['payment_method']['code']);
+        if ($cart->getCustomerId()) {
+            $paymentData = $this->additionalDataProviderPool->getData($code, ['code' => $code]);
+            $additionalInfo = array_merge((array)$payment->getAdditionalInformation(), $paymentData);
+            $payment->setAdditionalInformation($additionalInfo);
+        }
 
         $redirectUrl = $this->redirectManagement->processRedirectRequest((int)$cart->getId(), $payment);
 

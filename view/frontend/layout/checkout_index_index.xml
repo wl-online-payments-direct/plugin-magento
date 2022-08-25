@@ -18,8 +18,25 @@
                                                     <item name="children" xsi:type="array">
                                                         <item name="renders" xsi:type="array">
                                                             <item name="children" xsi:type="array">
-                                                                <item name="worldline-payments" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">Worldline_Payment/js/view/payment/worldline-payments</item>
+                                                                <item name="worldline-credit-card-payment" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Worldline_Payment/js/view/credit-card/worldline-payment</item>
+                                                                    <item name="methods" xsi:type="array">
+                                                                        <item name="worldline_cc" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                        <item name="worldline_cc_vault" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                        <item name="worldline_hosted_checkout" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                        <item name="worldline_hosted_checkout_vault" xsi:type="array">
+                                                                            <item name="isBillingAddressRequired" xsi:type="boolean">true</item>
+                                                                        </item>
+                                                                    </item>
+                                                                </item>
+                                                                <item name="worldline-hosted-checkout-payment" xsi:type="array">
+                                                                    <item name="component" xsi:type="string">Worldline_Payment/js/view/hosted-checkout/worldline-payment</item>
                                                                     <item name="methods" xsi:type="array">
                                                                         <item name="worldline_cc" xsi:type="array">
                                                                             <item name="isBillingAddressRequired" xsi:type="boolean">true</item>

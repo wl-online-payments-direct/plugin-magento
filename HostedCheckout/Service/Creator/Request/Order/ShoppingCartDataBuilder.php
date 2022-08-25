@@ -101,7 +101,9 @@ class ShoppingCartDataBuilder
         ));
         $orderLineDetails->setProductCode($item->getSku());
         $orderLineDetails->setProductName($item->getName());
-        $orderLineDetails->setProductPrice($this->preparePrice((float) $item->getPrice()));
+
+        $compensation = $this->preparePrice($item->getDiscountTaxCompensationAmount() / $item->getQty());
+        $orderLineDetails->setProductPrice($this->preparePrice((float) $item->getPrice()) + $compensation);
         $orderLineDetails->setProductType($item->getProductType());
         $orderLineDetails->setQuantity((float) $item->getQty());
         $orderLineDetails->setTaxAmount($this->preparePrice((float) ($item->getTaxAmount() / $item->getQty())));

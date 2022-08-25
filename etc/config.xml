@@ -77,6 +77,8 @@
                 <group>worldline_group</group>
                 <cart_lines>1</cart_lines>
                 <skip_3d>0</skip_3d>
+                <direct_debit_recurrence_type>UNIQUE</direct_debit_recurrence_type>
+                <direct_debit_signature_type>SMS</direct_debit_signature_type>
             </worldline_hosted_checkout>
             <worldline_hosted_checkout_vault>
                 <model>Worldline\HostedCheckout\Model\Method\Vault\CCVault\Virtual</model>
@@ -91,9 +93,6 @@
                 <production_api_url>https://payment.direct.worldline-solutions.com</production_api_url>
                 <testing_api_url>https://payment.preprod.direct.worldline-solutions.com</testing_api_url>
             </connection>
-            <webhook>
-                <allow_receiving_webhooks>1</allow_receiving_webhooks>
-            </webhook>
         </worldline_connection>
         <worldline_order_status_updater>
             <general>

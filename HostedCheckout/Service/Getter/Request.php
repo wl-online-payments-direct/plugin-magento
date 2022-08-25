@@ -32,7 +32,7 @@ class Request
 
     /**
      * Documentation:
-     * @see: https://support.direct.ingenico.com/documentation/api/reference/#operation/GetHostedCheckoutApi
+     * @link: https://support.direct.ingenico.com/documentation/api/reference/#operation/GetHostedCheckoutApi
      *
      * @param string $hostedCheckoutId
      * @return GetHostedCheckoutResponse

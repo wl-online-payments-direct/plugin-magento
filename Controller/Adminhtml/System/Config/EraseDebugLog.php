@@ -10,6 +10,9 @@ use Magento\Framework\Controller\ResultFactory;
 use Psr\Log\LoggerInterface;
 use Worldline\Payment\Model\Log\ResourceModel\Log;
 
+/**
+ * @core
+ */
 class EraseDebugLog extends Action
 {
     /**

@@ -9,4 +9,20 @@
         </arguments>
     </type>
     <!-- END Admin notification -->
+
+    <type name="Worldline\Payment\Block\Info">
+        <arguments>
+            <argument name="infoFormatter" xsi:type="object">Worldline\Payment\Block\Adminhtml\InfoFormatter</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Sales\Model\Order">
+        <plugin name="Worldline_Payment::check_refund_ability_for_order"
+                type="Worldline\Payment\Plugin\Magento\Sales\Model\Order\CheckRefundAbility"/>
+    </type>
+
+    <type name="Magento\Sales\Block\Adminhtml\Order\Creditmemo\Create\Form">
+        <plugin name="Worldline_Payment::replace_save_url"
+                type="\Worldline\Payment\Plugin\Magento\Sales\Block\Adminhtml\Order\Creditmemo\Create\Form\ReplaceSaveUrl"/>
+    </type>
 </config>

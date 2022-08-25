@@ -6,6 +6,9 @@ namespace Worldline\Payment\OnlinePayments\Sdk;
 
 use OnlinePayments\Sdk\RequestHeaderGenerator as SdkRequestHeaderGenerator;
 
+/**
+ * @core
+ */
 class RequestHeaderGenerator extends SdkRequestHeaderGenerator
 {
     /**

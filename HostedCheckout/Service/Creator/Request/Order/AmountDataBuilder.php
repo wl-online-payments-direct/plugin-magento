@@ -10,10 +10,6 @@ use Magento\Quote\Api\Data\CartInterface;
 
 class AmountDataBuilder
 {
-    public const AMOUNT = 'amount';
-    public const REFERENCES = 'references';
-    public const TOKEN = 'token';
-
     /**
      * @var AmountOfMoneyFactory
      */

@@ -14,6 +14,9 @@ use Magento\Ui\Component\MassAction\Filter;
 use Worldline\Payment\Logger\ResourceModel\RequestLog\CollectionFactory;
 use Worldline\Payment\Logger\ResourceModel\RequestLog as RequestLogResource;
 
+/**
+ * @core
+ */
 class MassProcessed extends Action implements HttpPostActionInterface
 {
     /**

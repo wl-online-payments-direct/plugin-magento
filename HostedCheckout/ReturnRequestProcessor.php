@@ -10,10 +10,10 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\QuoteManagement;
 use Magento\Sales\Model\OrderFactory;
 use Psr\Log\LoggerInterface;
-use Worldline\Payment\HostedCheckout\ResourceModel\Quote as QuoteResource;
 use Worldline\Payment\HostedCheckout\Service\Getter\Request;
 use Worldline\Payment\Model\Config\OrderStatusUpdater;
 use Worldline\Payment\Model\Order\PendingOrderException;
+use Worldline\Payment\Model\ResourceModel\Quote as QuoteResource;
 
 class ReturnRequestProcessor
 {
@@ -99,14 +99,9 @@ class ReturnRequestProcessor
             throw new LocalizedException(__('Cancelled by consumer'));
         }
 
-        $quote = $this->quoteResource->getQuoteByHostedCheckoutId($hostedCheckoutId);
+        $quote = $this->quoteResource->getQuoteByWorldlinePaymentId($hostedCheckoutId);
         if ($quote->getPayment()->getAdditionalInformation('return_id') !== $returnId) {
             throw new LocalizedException(__('Wrong return id'));
-        }
-
-        if (!$this->orderStatusUpdater->isReceivingWebhooksAllowed()) {
-            $this->quoteManagement->placeOrder($quote->getId());
-            return null;
         }
 
         $order = $this->orderFactory->create()->loadByIncrementId($quote->getReservedOrderId());
@@ -116,8 +111,9 @@ class ReturnRequestProcessor
             $this->checkoutSession->clearStorage();
             throw new PendingOrderException(
                 __(
-                    'The order is in the process of creation. Please, remember the order id: %1. '
-                    . 'If you do not get the email within 10 minutes, please, contact your merchant.',
+                    'Thank you for your order %1.'
+                    . ' Your order is still being processed and you will receive a confirmation e-mail.'
+                    . ' Please contact us in case you don\'t receive the confirmation within 10 minutes.',
                     $quote->getReservedOrderId()
                 )
             );

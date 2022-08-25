@@ -8,6 +8,7 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\ScopeInterface;
 
 class TestConnection extends Field
 {
@@ -55,11 +56,14 @@ class TestConnection extends Field
     protected function _getElementHtml(AbstractElement $element): string
     {
         $originalData = $element->getOriginalData();
+        $websiteId = $this->getRequest()->getParam(ScopeInterface::SCOPE_WEBSITE);
+        $urlParams = ($websiteId !== null) ? [ScopeInterface::SCOPE_WEBSITE => (int) $websiteId] : [];
+
         $this->addData(
             [
                 'label' => __($originalData['label']),
                 'html_id' => $element->getHtmlId(),
-                'ajax_url' => $this->_urlBuilder->getUrl('worldline/system_config/testconnection'),
+                'ajax_url' => $this->_urlBuilder->getUrl('worldline/system_config/testconnection', $urlParams),
                 'field_mapping' => str_replace('"', '\\"', $this->serializer->serialize($this->_getFieldMapping()))
             ]
         );
@@ -77,8 +81,8 @@ class TestConnection extends Field
             'api_key_prod' => 'worldline_connection_connection_api_key_prod',
             'api_secret' => 'worldline_connection_connection_api_secret',
             'api_secret_prod' => 'worldline_connection_connection_api_secret_prod',
-            'api_test_endpoint' => 'worldline_connection_connection_testing_api_url',
-            'api_prod_endpoint' => 'worldline_connection_connection_production_api_url',
+            'testing_api_url' => 'worldline_connection_connection_testing_api_url',
+            'production_api_url' => 'worldline_connection_connection_production_api_url',
             'environment_mode' => 'worldline_connection_connection_environment_mode',
             'merchant_id' => 'worldline_connection_connection_merchant_id',
             'merchant_id_prod' => 'worldline_connection_connection_merchant_id_prod'

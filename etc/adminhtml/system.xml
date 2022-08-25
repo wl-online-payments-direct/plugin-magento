@@ -28,7 +28,7 @@
                 </field>
             </group>
         </section>
-        <section id="worldline_connection" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+        <section id="worldline_connection" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
             <label>Connection</label>
             <tab>worldline</tab>
             <resource>Worldline_Payment::config_worldline</resource>
@@ -99,45 +99,28 @@
                     </depends>
                 </field>
                 <field id="test_connection" translate="label" type="text" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Test Connection</label>
+                    <label>Test Connection &amp; Save Credentials</label>
                     <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\TestConnection</frontend_model>
                 </field>
             </group>
             <group id="webhook" translate="label" type="text" sortOrder="20" showInDefault="1">
                 <label>Webhook</label>
-                <field id="allow_receiving_webhooks" translate="label comment" type="select" sortOrder="10" showInDefault="1" canRestore="1">
-                    <label>Allow Receiving Webhooks</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment><![CDATA[<a href="https://support.direct.ingenico.com/documentation/api/webhooks" target="_blank">Need help?</a>]]></comment>
-                </field>
                 <field id="webhook_url" translate="label comment" type="text" sortOrder="20" showInDefault="1">
                     <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\WebhookUrl</frontend_model>
-                    <depends>
-                        <field id="allow_receiving_webhooks">1</field>
-                    </depends>
                 </field>
                 <field id="key" translate="label" type="obscure" sortOrder="30" showInDefault="1">
                     <label>Key</label>
                     <validate>required-entry</validate>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
-                    <depends>
-                        <field id="allow_receiving_webhooks">1</field>
-                    </depends>
                 </field>
                 <field id="secret_key" translate="label comment" type="obscure" sortOrder="40" showInDefault="1">
                     <label>Secret Key</label>
                     <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
                     <validate>required-entry</validate>
                     <comment>To retrieve webhooks credentials, login to the Worldline Back Office</comment>
-                    <depends>
-                        <field id="allow_receiving_webhooks">1</field>
-                    </depends>
                 </field>
                 <field id="webhook_info" translate="label" type="text" sortOrder="50" showInDefault="1">
                     <frontend_model>Worldline\Payment\Block\Adminhtml\System\Config\WebhookInfo</frontend_model>
-                    <depends>
-                        <field id="allow_receiving_webhooks">1</field>
-                    </depends>
                 </field>
             </group>
         </section>
@@ -502,7 +485,23 @@
                     <label>Skip 3DSecure Authentication</label>
                     <tooltip>This option should not be turned off if the merchant is based in a EU country</tooltip>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <config_path>payment/worldline_cc/skip_3d</config_path>
+                    <config_path>payment/worldline_hosted_checkout/skip_3d</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="direct_debit_recurrence_type" translate="label" type="select" sortOrder="230" showInDefault="1" showInWebsite="1">
+                    <label>Direct Debit Recurrence Type</label>
+                    <source_model>Worldline\Payment\HostedCheckout\Config\Source\DirectDebit\RecurrenceType</source_model>
+                    <config_path>payment/worldline_hosted_checkout/direct_debit_recurrence_type</config_path>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+                <field id="direct_debit_signature_type" translate="label" type="select" sortOrder="240" showInDefault="1" showInWebsite="1">
+                    <label>Direct Debit Signature Type</label>
+                    <source_model>Worldline\Payment\HostedCheckout\Config\Source\DirectDebit\SignatureType</source_model>
+                    <config_path>payment/worldline_hosted_checkout/direct_debit_signature_type</config_path>
                     <depends>
                         <field id="active">1</field>
                     </depends>
@@ -511,6 +510,7 @@
         </section>
         <section id="worldline_order_status_updater" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Order Status Updater</label>
+            <class>separator-top</class>
             <tab>worldline</tab>
             <resource>Worldline_Payment::config_worldline</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">

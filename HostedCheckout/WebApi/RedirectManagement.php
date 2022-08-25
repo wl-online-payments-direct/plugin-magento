@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Worldline\Payment\HostedCheckout\WebApi;
 
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\Data\CartInterface;
@@ -13,6 +14,7 @@ use Magento\Vault\Api\Data\PaymentTokenInterface;
 use Worldline\Payment\Api\HostedCheckout\RedirectManagementInterface;
 use Worldline\Payment\HostedCheckout\Service\Creator\Request;
 use Worldline\Payment\HostedCheckout\Service\Creator\RequestBuilder;
+use Worldline\Payment\Model\DataAssigner\DataAssignerInterface;
 
 class RedirectManagement implements RedirectManagementInterface
 {
@@ -36,16 +38,30 @@ class RedirectManagement implements RedirectManagementInterface
      */
     private $quoteIdMaskFactory;
 
+    /**
+     * @var RequestInterface
+     */
+    private $request;
+
+    /**
+     * @var DataAssignerInterface[]
+     */
+    private $dataAssignerPool;
+
     public function __construct(
         CartRepositoryInterface $cartRepository,
         Request $createRequest,
         RequestBuilder $createRequestBuilder,
-        QuoteIdMaskFactory $quoteIdMaskFactory
+        QuoteIdMaskFactory $quoteIdMaskFactory,
+        RequestInterface $request,
+        array $dataAssignerPool = []
     ) {
         $this->cartRepository = $cartRepository;
         $this->createRequest = $createRequest;
         $this->createRequestBuilder = $createRequestBuilder;
         $this->quoteIdMaskFactory = $quoteIdMaskFactory;
+        $this->request = $request;
+        $this->dataAssignerPool = $dataAssignerPool;
     }
 
     /**
@@ -60,6 +76,14 @@ class RedirectManagement implements RedirectManagementInterface
     public function processRedirectRequest(int $cartId, PaymentInterface $paymentMethod): string
     {
         $quote = $this->cartRepository->get($cartId);
+
+        $additionalData = $paymentMethod->getAdditionalData();
+        $additionalData['agent'] = $this->request->getHeader('accept');
+        $additionalData['user-agent'] = $this->request->getHeader('user-agent');
+
+        foreach ($this->dataAssignerPool as $dataAssigner) {
+            $dataAssigner->assign($quote->getPayment(), $additionalData);
+        }
 
         return $this->process($quote, $paymentMethod);
     }
@@ -89,14 +113,15 @@ class RedirectManagement implements RedirectManagementInterface
 
     private function process(CartInterface $quote, PaymentInterface $paymentMethod): string
     {
+        $payment = $quote->getPayment();
         $quote->reserveOrderId();
 
         $this->setToken($quote, $paymentMethod);
 
         $request = $this->createRequestBuilder->build($quote);
         $response = $this->createRequest->create($request);
-        $quote->getPayment()->setAdditionalInformation('return_id', $response->getRETURNMAC());
-        $quote->getPayment()->setAdditionalInformation('hosted_checkout_id', $response->getHostedCheckoutId());
+        $payment->setAdditionalInformation('return_id', $response->getRETURNMAC());
+        $payment->setAdditionalInformation('hosted_checkout_id', $response->getHostedCheckoutId());
 
         $this->cartRepository->save($quote);
 
@@ -105,14 +130,15 @@ class RedirectManagement implements RedirectManagementInterface
 
     private function setToken(CartInterface $quote, PaymentInterface $paymentMethod): void
     {
+        $payment = $quote->getPayment();
         $publicToken = $paymentMethod->getAdditionalData()['public_hash'] ?? false;
         if (!$publicToken) {
-            $quote->getPayment()->unsAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH);
-            $quote->getPayment()->unsAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID);
+            $payment->unsAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH);
+            $payment->unsAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID);
             return;
         }
 
-        $quote->getPayment()->setAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH, $publicToken);
-        $quote->getPayment()->setAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID, $quote->getCustomerId());
+        $payment->setAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH, $publicToken);
+        $payment->setAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID, $quote->getCustomerId());
     }
 }

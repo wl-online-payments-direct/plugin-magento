@@ -10,6 +10,9 @@ use Magento\Framework\Controller\Result\Raw;
 use Magento\Framework\Controller\Result\RawFactory;
 use Worldline\Payment\Logger\ContentProcessor;
 
+/**
+ * @core
+ */
 class DownloadDebugLog extends Action
 {
     /**

@@ -15,7 +15,7 @@ use Worldline\Payment\Model\Order\PendingOrderException;
 class ReturnUrl extends Action
 {
     private const SUCCESS_URL = 'checkout/onepage/success';
-    private const FAIL_URL = 'worldline/payment/failed';
+    private const FAIL_URL = 'worldline/HostedCheckout/failed';
 
     /**
      * @var ReturnRequestProcessor
@@ -35,6 +35,9 @@ class ReturnUrl extends Action
         try {
             $hostedCheckoutId = (string) $this->getRequest()->getParam('hostedCheckoutId');
             $returnId = (string) $this->getRequest()->getParam('RETURNMAC');
+
+            // phpcs:ignore Magento2.Functions.DiscouragedFunction
+            sleep(2); // wait for the webhook
 
             $this->returnRequestProcessor->processRequest($hostedCheckoutId, $returnId);
 

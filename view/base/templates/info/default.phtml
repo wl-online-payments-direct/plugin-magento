@@ -1,35 +1,28 @@
 <?php
-/**
- * @var Worldline\Payment\Block\Info $block
- */
+/** @var Worldline\Payment\Block\Info $block */
 $specificInfo = $block->getSpecificInformation();
+$cardNumbers = $block->getPaymentInformation()->getCardLastNumbers();
 ?>
 <?= $block->escapeHtml($block->getPaymentTitle()); ?>
 
-<?php if ($block->isWorldlinePayment()): ?>
-    <?php if ($block->getLast4Digits()): ?>
-        <span><?= $block->escapeHtml(__('ending')) ?></span> <?= $block->escapeHtml($block->getLast4Digits()); ?>
-    <?php endif; ?>
+<?php if ($cardNumbers): ?>
+    <span><?= $block->escapeHtml(__('ending')) ?></span> <?= $block->escapeHtml($cardNumbers); ?>
+<?php endif; ?>
 
-    <?php if ($block->getIconUrl()): ?>
-        <img src="<?= $block->escapeHtmlAttr($block->getIconUrl()) ?>"
-             style="max-height: <?= $block->escapeHtmlAttr($block->getMaxHeight()) ?>;
-                    aspect-ratio: <?= $block->escapeHtmlAttr($block->getAspectRatio()) ?>;"
-             alt="<?= $block->escapeHtmlAttr($block->escapeHtml($block->getIconTitle())) ?>"
-        >
-    <?php endif; ?>
+<?php if ($block->getIconUrl()): ?>
+    <img src="<?= $block->escapeHtmlAttr($block->getIconUrl()) ?>"
+         style="max-height: <?= $block->escapeHtmlAttr($block->getMaxHeight()) ?>;
+                aspect-ratio: <?= $block->escapeHtmlAttr($block->getAspectRatio()) ?>;"
+         alt="<?= $block->escapeHtmlAttr($block->escapeHtml($block->getIconTitle())) ?>"
+    >
 <?php endif; ?>
 
 <?php if ($specificInfo): ?>
     <table class="data-table admin__table-secondary">
-        <?php foreach ($specificInfo as $label => $value): ?>
+        <?php foreach ($specificInfo as $item): ?>
             <tr>
-                <th><?= $block->escapeHtml($label); ?>:</th>
-                <td>
-                    <?= /* @noEscape */ nl2br($block->escapeHtml(
-                        implode("\n", $block->getValueAsArray($value, true))
-                    )); ?>
-                </td>
+                <th><?= $block->escapeHtml($item['label']); ?>:</th>
+                <td><?= $block->escapeHtml($item['value']); ?></td>
             </tr>
         <?php endforeach; ?>
     </table>

@@ -1,23 +1,26 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Worldline\Payment\CreditCard\GraphQl\Resolver;
 
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Worldline\Payment\Model\Order\Service\CreditCardProcessor;
+use Worldline\Payment\CreditCard\ReturnRequestProcessor;
 
 class RequestResult implements ResolverInterface
 {
     /**
-     * @var CreditCardProcessor
+     * @var ReturnRequestProcessor
      */
-    private $paymentProcessor;
+    private $returnRequestProcessor;
 
-    public function __construct(CreditCardProcessor $paymentProcessor)
-    {
-        $this->paymentProcessor = $paymentProcessor;
+    public function __construct(
+        ReturnRequestProcessor $returnRequestProcessor
+    ) {
+        $this->returnRequestProcessor = $returnRequestProcessor;
     }
 
     /**
@@ -32,28 +35,24 @@ class RequestResult implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        $mac = $args['mac'] ?? null;
-        $paymentId = $args['paymentId'] ?? null;
-
-        if (!$paymentId || !$mac) {
+        $hostedTokenizationId = $args['paymentId'] ?? null;
+        if (!$hostedTokenizationId) {
             return [];
         }
 
-        if ($this->paymentProcessor->getPaymentReturnMac($paymentId) != $mac) {
-            return [];
-        }
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        sleep(2); // wait for the webhook
 
-        $paymentStatusCode = $this->paymentProcessor->process($paymentId);
-        if (!in_array($paymentStatusCode, CreditCardProcessor::SUCCESS_STATUS_CODES)) {
+        try {
+            return [
+                'result' => 'success',
+                'orderIncrementId' => $this->returnRequestProcessor->processRequest($hostedTokenizationId)
+            ];
+        } catch (LocalizedException $e) {
             return [
                 'result' => 'fail',
                 'orderIncrementId' => ''
             ];
         }
-
-        return [
-            'result' => 'success',
-            'orderIncrementId' => $this->paymentProcessor->getIncrementId($paymentId)
-        ];
     }
 }

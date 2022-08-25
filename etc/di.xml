@@ -6,18 +6,48 @@
     <preference type="Worldline\Payment\Model\Log\Log" for="Worldline\Payment\Api\Data\LogInterface" />
     <preference type="Worldline\Payment\Model\Log\LogRepository" for="Worldline\Payment\Api\LogRepositoryInterface" />
     <preference type="Worldline\Payment\Logger\RequestLog" for="Worldline\Payment\Api\Data\RequestLogInterface" />
+    <preference type="Worldline\Payment\Model\RefundRequest\RefundRequest" for="Worldline\Payment\Api\Data\RefundRequestInterface" />
+    <preference type="Worldline\Payment\Model\RefundRequest\RefundRequestRepository" for="Worldline\Payment\Api\RefundRequestRepositoryInterface" />
     <preference type="Worldline\Payment\HostedCheckout\WebApi\RedirectManagement" for="Worldline\Payment\Api\HostedCheckout\RedirectManagementInterface" />
+    <preference type="Worldline\Payment\CreditCard\WebApi\CreatePaymentManagement" for="Worldline\Payment\Api\CreditCard\CreatePaymentManagementInterface" />
+    <preference type="Worldline\Payment\Model\Transaction\Transaction" for="Worldline\Payment\Api\Data\TransactionInterface" />
+    <preference type="Worldline\Payment\Model\Transaction\TransactionRepository" for="Worldline\Payment\Api\TransactionRepositoryInterface" />
+    <preference type="Worldline\Payment\Model\Transaction\TransactionWebhookManager" for="Worldline\Payment\Api\TransactionWebhookManagerInterface" />
+    <preference type="Worldline\Payment\Model\Transaction\PaymentInfo" for="Worldline\Payment\Api\Data\PaymentInfoInterface" />
     <!-- End Preference -->
+
+    <type name="Worldline\Payment\Block\Info">
+        <arguments>
+            <argument name="infoFormatter" xsi:type="object">Worldline\Payment\Block\InfoFormatter</argument>
+        </arguments>
+    </type>
 
     <type name="Worldline\Payment\Model\Webhook\GeneralProcessor">
         <arguments>
-            <argument name="handlers" xsi:type="array">
-                <item name="payment-additional-data" xsi:type="object">Worldline\Payment\Model\Webhook\Handler\PaymentInformation</item>
-            </argument>
             <argument name="processors" xsi:type="array">
-                <item name="worldline_hosted_checkout.payment.pending_capture" xsi:type="object">Worldline\Payment\HostedCheckout\Webhook\PlaceOrderProcessor</item>
-                <item name="worldline_hosted_checkout.payment.captured" xsi:type="object">Worldline\Payment\HostedCheckout\Webhook\PlaceOrderProcessor</item>
-                <item name="worldline_hosted_checkout.payment.authorization_requested" xsi:type="object">Worldline\Payment\HostedCheckout\Webhook\PlaceOrderProcessor</item>
+                <item name="payment.pending_capture" xsi:type="object">Worldline\Payment\Model\Webhook\PlaceOrderProcessor</item>
+                <item name="payment.captured" xsi:type="object">Worldline\Payment\Model\Webhook\PlaceOrderProcessor</item>
+                <item name="payment.authorization_requested" xsi:type="object">Worldline\Payment\Model\Webhook\PlaceOrderProcessor</item>
+                <item name="payment.refunded" xsi:type="object">Worldline\Payment\Model\Webhook\CreditmemoProcessor</item>
+                <item name="refund.refund_requested" xsi:type="object">Worldline\Payment\Model\Webhook\CreditmemoProcessor</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Worldline\Payment\HostedCheckout\WebApi\RedirectManagement">
+        <arguments>
+            <argument name="dataAssignerPool" xsi:type="array">
+                <item name="device-data" xsi:type="object">Worldline\Payment\Model\DataAssigner\DeviceDataAssigner</item>
+                <item name="payment-data" xsi:type="object">Worldline\Payment\HostedCheckout\WebApi\RedirectManagement\PaymentMethodDataAssigner</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Worldline\Payment\CreditCard\WebApi\CreatePaymentManagement">
+        <arguments>
+            <argument name="dataAssignerPool" xsi:type="array">
+                <item name="device-data" xsi:type="object">Worldline\Payment\Model\DataAssigner\DeviceDataAssigner</item>
+                <item name="payment-data" xsi:type="object">Worldline\Payment\CreditCard\WebApi\CreatePaymentManagement\PaymentMethodDataAssigner</item>
             </argument>
         </arguments>
     </type>
@@ -81,7 +111,6 @@
     <type name="Worldline\Payment\Model\Config\OrderStatusUpdater">
         <arguments>
             <argument name="data" xsi:type="array">
-                <item name="allow_receiving_webhooks" xsi:type="string">worldline_connection/webhook/allow_receiving_webhooks</item>
                 <item name="key" xsi:type="string">worldline_connection/webhook/key</item>
                 <item name="secret_key" xsi:type="string">worldline_connection/webhook/secret_key</item>
                 <item name="fallback_timeout" xsi:type="string">worldline_order_status_updater/general/fallback_timeout</item>
@@ -279,7 +308,6 @@
             <argument name="handlers" xsi:type="array">
                 <item name="payment_details" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\PaymentDetailsHandler</item>
                 <item name="txn_id" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\TransactionIdHandler</item>
-                <item name="3d_secure" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\ThreeDSecureDetailsHandler</item>
             </argument>
         </arguments>
     </virtualType>
@@ -329,7 +357,6 @@
                 <item name="payment_details" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\PaymentDetailsHandler</item>
                 <item name="txn_id" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\TransactionIdHandler</item>
                 <item name="vault_details" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\VaultDetailsHandler</item>
-                <item name="3d_secure" xsi:type="string">Worldline\Payment\CreditCard\Gateway\Response\ThreeDSecureDetailsHandler</item>
             </argument>
         </arguments>
     </virtualType>
@@ -475,7 +502,6 @@
                 <item name="default" xsi:type="string">Worldline\HostedCheckout\Gateway\Config\ConfigValueHandler\Virtual</item>
                 <item name="can_void" xsi:type="string">Worldline\Payment\HostedCheckout\Gateway\Response\CanVoidHandler</item>
                 <item name="can_cancel" xsi:type="string">Worldline\Payment\HostedCheckout\Gateway\Response\CanVoidHandler</item>
-                <item name="can_capture" xsi:type="string">Worldline\Payment\HostedCheckout\Gateway\Response\CanVoidHandler</item>
             </argument>
         </arguments>
     </virtualType>
@@ -594,6 +620,7 @@
             <argument name="handlers" xsi:type="array">
                 <item name="payment_details" xsi:type="string">Worldline\Payment\HostedCheckout\Gateway\Response\PaymentDetailsHandler</item>
                 <item name="txn_id" xsi:type="string">Worldline\Payment\HostedCheckout\Gateway\Response\TransactionIdHandler</item>
+                <item name="vault_details" xsi:type="string">Worldline\Payment\HostedCheckout\Gateway\Response\VaultDetailsHandler</item>
             </argument>
         </arguments>
     </virtualType>

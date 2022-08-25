@@ -42,6 +42,12 @@ class TransactionSale extends AbstractTransaction
         return $response;
     }
 
+    /**
+     * @param array $data
+     * @param GetHostedCheckoutResponse $response
+     * @return void
+     * @throws LocalizedException
+     */
     private function writeLogIfNeeded(array $data, GetHostedCheckoutResponse $response): void
     {
         $transactionAmountOfMoney = $response->getCreatedPaymentOutput()
@@ -57,6 +63,7 @@ class TransactionSale extends AbstractTransaction
                 'transaction_amount_of_money' => $transactionAmountOfMoney,
                 'order_amount_of_money' => $orderAmountOfMoney,
             ]);
+            throw new LocalizedException(__('Wrong amount'));
         }
     }
 }

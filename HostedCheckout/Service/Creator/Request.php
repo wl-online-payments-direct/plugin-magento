@@ -41,7 +41,7 @@ class Request
 
     /**
      * Documentation:
-     * @see https://support.direct.ingenico.com/documentation/api/reference/#operation/CreateHostedCheckoutApi
+     * @link https://support.direct.ingenico.com/documentation/api/reference/#operation/CreateHostedCheckoutApi
      *
      * @param CreateHostedCheckoutRequest $request
      * @return CreateHostedCheckoutResponse

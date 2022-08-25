@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Worldline\Payment\HostedCheckout\Gateway\Request;
 
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Magento\Sales\Api\Data\TransactionInterface;
 use Magento\Sales\Model\Order\Payment;
 use OnlinePayments\Sdk\Domain\AmountOfMoneyFactory;
 use OnlinePayments\Sdk\Domain\RefundRequest;
@@ -50,7 +49,7 @@ class RefundDataBuilder implements BuilderInterface
         $payment = $paymentDO->getPayment();
         // Payment sets Capture txn id of current Invoice into ParentTransactionId Field
         $txnId = str_replace(
-            '-' . TransactionInterface::TYPE_CAPTURE,
+            ['-refund', '-capture'],
             '',
             $payment->getParentTransactionId() ?: $payment->getLastTransId()
         );

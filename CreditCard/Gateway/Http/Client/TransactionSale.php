@@ -4,64 +4,60 @@ declare(strict_types=1);
 
 namespace Worldline\Payment\CreditCard\Gateway\Http\Client;
 
-use Exception;
 use Magento\Framework\Exception\LocalizedException;
-use OnlinePayments\Sdk\Domain\CreatePaymentResponse;
+use OnlinePayments\Sdk\Domain\PaymentResponse;
 use Psr\Log\LoggerInterface;
+use Worldline\Payment\CreditCard\Gateway\Request\PaymentDataBuilder;
+use Worldline\Payment\CreditCard\Service\Getter\Request as GetterRequest;
 use Worldline\Payment\Gateway\Http\Client\AbstractTransaction;
-use Worldline\Payment\Model\ClientProvider;
-use Worldline\Payment\Model\Config\WorldlineConfig;
 
 class TransactionSale extends AbstractTransaction
 {
     /**
-     * @var \Worldline\Payment\Model\Config\WorldlineConfig
+     * @var GetterRequest
      */
-    private $worldlineConfig;
+    private $getterRequest;
 
-    /**
-     * @var ClientProvider
-     */
-    private $modelClient;
-
-    /**
-     * @var CreatePaymentRequestBuilder
-     */
-    private $createPaymentRequestBuilder;
-
-    /**
-     * @param LoggerInterface $logger
-     * @param WorldlineConfig $worldlineConfig
-     * @param ClientProvider $modelClient
-     * @param CreatePaymentRequestBuilder $createPaymentRequestBuilder
-     */
     public function __construct(
         LoggerInterface $logger,
-        WorldlineConfig $worldlineConfig,
-        ClientProvider $modelClient,
-        CreatePaymentRequestBuilder $createPaymentRequestBuilder
+        GetterRequest $getterRequest
     ) {
         parent::__construct($logger);
-        $this->worldlineConfig = $worldlineConfig;
-        $this->modelClient = $modelClient;
-        $this->createPaymentRequestBuilder = $createPaymentRequestBuilder;
+        $this->getterRequest = $getterRequest;
     }
 
     /**
      * @param array $data
-     * @return CreatePaymentResponse
+     * @return PaymentResponse
      * @throws LocalizedException
      */
-    protected function process(array $data): CreatePaymentResponse
+    protected function process(array $data): PaymentResponse
     {
-        try {
-            return $this->modelClient->getClient()
-                ->merchant($this->worldlineConfig->getMerchantId())
-                ->payments()
-                ->createPayment($this->createPaymentRequestBuilder->build($data));
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage(), $e->getTrace());
-            throw new LocalizedException(__('Sorry, but something went wrong'));
+        $paymentId = $data[PaymentDataBuilder::PAYMENT_ID] ?? false;
+        if (!$paymentId) {
+            throw new LocalizedException(__('Payment id is missing'));
+        }
+
+        $response = $this->getterRequest->create($paymentId);
+        $this->writeLogIfNeeded($data, $response);
+
+        return $response;
+    }
+
+    private function writeLogIfNeeded(array $data, PaymentResponse $response): void
+    {
+        $transactionAmountOfMoney = $response->getPaymentOutput()
+            ->getAmountOfMoney()
+            ->getAmount();
+        $orderAmountOfMoney = $data[PaymentDataBuilder::AMOUNT] ?? 0;
+
+        if ($transactionAmountOfMoney !== $orderAmountOfMoney) {
+            $this->logger->warning(__('Wrong amount'), [
+                'credit_card_payment_id' => $response->getId(),
+                'transaction_amount_of_money' => $transactionAmountOfMoney,
+                'order_amount_of_money' => $orderAmountOfMoney,
+            ]);
+            throw new LocalizedException(__('Wrong amount'));
         }
     }
 }

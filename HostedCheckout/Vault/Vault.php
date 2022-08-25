@@ -16,7 +16,7 @@ use Magento\Sales\Api\Data\OrderPaymentExtensionInterfaceFactory;
 use Magento\Vault\Api\PaymentTokenManagementInterface;
 use Magento\Vault\Model\Method\Vault as MagentoVault;
 use Worldline\Payment\HostedCheckout\UI\ConfigProvider;
-use Worldline\Payment\Model\Method\Vault\Validation;
+use Worldline\Payment\Model\VaultValidation;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -24,7 +24,7 @@ use Worldline\Payment\Model\Method\Vault\Validation;
 class Vault extends MagentoVault
 {
     /**
-     * @var Validation
+     * @var VaultValidation
      */
     private $vaultValidation;
 
@@ -38,7 +38,7 @@ class Vault extends MagentoVault
      * @param Command\CommandManagerPoolInterface $commandManagerPool
      * @param PaymentTokenManagementInterface $tokenManagement
      * @param OrderPaymentExtensionInterfaceFactory $paymentExtensionFactory
-     * @param Validation $vaultValidation
+     * @param VaultValidation $vaultValidation
      * @param string $code
      * @param Json|null $jsonSerializer
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
@@ -53,7 +53,7 @@ class Vault extends MagentoVault
         Command\CommandManagerPoolInterface $commandManagerPool,
         PaymentTokenManagementInterface $tokenManagement,
         OrderPaymentExtensionInterfaceFactory $paymentExtensionFactory,
-        Validation $vaultValidation,
+        VaultValidation $vaultValidation,
         string $code,
         Json $jsonSerializer = null
     ) {
@@ -83,7 +83,7 @@ class Vault extends MagentoVault
             return parent::isAvailable($quote);
         }
 
-        if (!$this->vaultValidation->guestQuoteValidation($quote)) {
+        if ($quote->getCustomerIsGuest()) {
             return false;
         }
 

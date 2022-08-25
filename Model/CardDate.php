@@ -8,6 +8,9 @@ use DateTimeZone;
 use Magento\Framework\Serialize\Serializer\Json;
 use OnlinePayments\Sdk\Domain\CardPaymentMethodSpecificOutput;
 
+/**
+ * @core
+ */
 class CardDate
 {
     /**
@@ -65,10 +68,6 @@ class CardDate
         );
     }
 
-    /**
-     * @param array $details
-     * @return string
-     */
     public function convertDetailsToJSON(array $details): string
     {
         $json = $this->serializer->serialize($details);

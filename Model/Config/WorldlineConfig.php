@@ -64,20 +64,12 @@ class WorldlineConfig
      */
     private $apiEndpoint = null;
 
-    /**
-     * @param ScopeConfigInterface $scopeConfig
-     * @param EncryptorInterface $encryptor
-     */
     public function __construct(ScopeConfigInterface $scopeConfig, EncryptorInterface $encryptor)
     {
         $this->scopeConfig = $scopeConfig;
         $this->encryptor = $encryptor;
     }
 
-    /**
-     * @param int|null $scopeCode
-     * @return bool
-     */
     public function isProductionMode(?int $scopeCode = null): bool
     {
         return $this->scopeConfig->isSetFlag(
@@ -87,10 +79,6 @@ class WorldlineConfig
         );
     }
 
-    /**
-     * @param int|null $scopeCode
-     * @return string
-     */
     public function getMerchantId(?int $scopeCode = null): string
     {
         if ($this->merchantId) {
@@ -102,18 +90,11 @@ class WorldlineConfig
         return $this->merchantId;
     }
 
-    /**
-     * @param string $merchantId
-     */
     public function setMerchantId(string $merchantId)
     {
         $this->merchantId = $merchantId;
     }
 
-    /**
-     * @param int|null $scopeCode
-     * @return string
-     */
     public function getApiKey(?int $scopeCode = null): string
     {
         if ($this->apiKey) {
@@ -127,18 +108,11 @@ class WorldlineConfig
         return $this->apiKey;
     }
 
-    /**
-     * @param string $apiKey
-     */
     public function setApiKey(string $apiKey)
     {
         $this->apiKey = $apiKey;
     }
 
-    /**
-     * @param int|null $scopeCode
-     * @return string
-     */
     public function getApiSecret(?int $scopeCode = null):string
     {
         if ($this->apiSecret) {
@@ -152,18 +126,11 @@ class WorldlineConfig
         return $this->apiSecret;
     }
 
-    /**
-     * @param string $apiSecret
-     */
     public function setApiSecret(string $apiSecret)
     {
         $this->apiSecret = $apiSecret;
     }
 
-    /**
-     * @param int|null $scopeCode
-     * @return string
-     */
     public function getApiEndpoint(?int $scopeCode = null): string
     {
         if ($this->apiEndpoint) {
@@ -180,27 +147,16 @@ class WorldlineConfig
         return $this->apiEndpoint;
     }
 
-    /**
-     * @param string $apiEndpoint
-     */
     public function setApiEndpoint(string $apiEndpoint)
     {
         $this->apiEndpoint = $apiEndpoint;
     }
 
-    /**
-     * @param int $type
-     * @return string|null
-     */
     public function mapCcType(int $type): ?string
     {
         return $this->ccTypesMapper[$type] ?? null;
     }
 
-    /**
-     * @param int|null $scopeCode
-     * @return string|null
-     */
     public function getLoggingLifetime(?int $scopeCode = null): ?string
     {
         return $this->scopeConfig->getValue(

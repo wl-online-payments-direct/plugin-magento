@@ -6,6 +6,12 @@ Realized payment methods:
 
 Change log:
 
+1.3.0
+- credit card payment method improvements
+- new flow for the refunds: pending, refunded statuses for the refund items
+- support Sepa methods for the hosted checkout payment method
+- bug fix and general improvements
+
 1.2.0
 - hosted checkout payment method improvements
 - show Worldline information in order overview pages: frontend and backend

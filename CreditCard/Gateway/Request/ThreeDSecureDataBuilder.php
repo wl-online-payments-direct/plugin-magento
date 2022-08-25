@@ -23,6 +23,7 @@ class ThreeDSecureDataBuilder implements BuilderInterface
      * @var ThreeDSecureFactory
      */
     private $threeDSecureFactory;
+
     /**
      * @var RedirectionDataFactory
      */
