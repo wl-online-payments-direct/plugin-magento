@@ -63,8 +63,9 @@ class RequestRedirect implements ResolverInterface
         $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
         $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
         $payment = $cart->getPayment();
+        $paymentPubHash = $payment->getAdditionalInformation('public_hash');
 
-        if ($cart->getCustomerId()) {
+        if (!$paymentPubHash && $cart->getCustomerId()) {
             $paymentData = $this->additionalDataProviderPool->getData($code, ['code' => $code]);
             $additionalInfo = array_merge((array)$payment->getAdditionalInformation(), $paymentData);
             $payment->setAdditionalInformation($additionalInfo);

@@ -6,6 +6,9 @@ Realized payment methods:
 
 Change log:
 
+1.3.1
+- graphQL bug fix
+
 1.3.0
 - credit card payment method improvements
 - new flow for the refunds: pending, refunded statuses for the refund items

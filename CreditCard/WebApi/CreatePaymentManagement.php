@@ -151,13 +151,9 @@ class CreatePaymentManagement implements CreatePaymentManagementInterface
     {
         $payment = $quote->getPayment();
         $publicToken = $paymentMethod->getAdditionalData()['public_hash'] ?? false;
-        if (!$publicToken) {
-            $payment->unsAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH);
-            $payment->unsAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID);
-            return;
+        if ($publicToken) {
+            $payment->setAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH, $publicToken);
+            $payment->setAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID, $quote->getCustomerId());
         }
-
-        $payment->setAdditionalInformation(PaymentTokenInterface::PUBLIC_HASH, $publicToken);
-        $payment->setAdditionalInformation(PaymentTokenInterface::CUSTOMER_ID, $quote->getCustomerId());
     }
 }
