@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Worldline\Payment\CreditCard\Gateway\Request;
 
 use Magento\Payment\Gateway\Request\BuilderInterface;
-use Magento\Sales\Api\Data\TransactionInterface;
 use Magento\Sales\Model\Order\Payment;
 use OnlinePayments\Sdk\Domain\AmountOfMoney;
 use Psr\Log\LoggerInterface;
@@ -44,7 +43,7 @@ class RefundDataBuilder implements BuilderInterface
 
         $amount = null;
         try {
-            $amount = (int) ($this->subjectReader->readAmount($buildSubject) * 100);
+            $amount = (int) round($this->subjectReader->readAmount($buildSubject) * 100);
             $currencyCode = $payment->getOrder()->getOrderCurrencyCode();
         } catch (\InvalidArgumentException $e) {
             $this->logger->debug($e->getMessage(), $e->getTrace());
@@ -58,7 +57,7 @@ class RefundDataBuilder implements BuilderInterface
          * We should remember that Payment sets Capture txn id of current Invoice into ParentTransactionId Field
          */
         $txnId = str_replace(
-            '-' . TransactionInterface::TYPE_CAPTURE,
+            ['-refund', '-capture'],
             '',
             $payment->getParentTransactionId() ?: $payment->getLastTransId()
         );

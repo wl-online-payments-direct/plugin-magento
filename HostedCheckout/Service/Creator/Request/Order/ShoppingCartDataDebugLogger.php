@@ -5,6 +5,7 @@ namespace Worldline\Payment\HostedCheckout\Service\Creator\Request\Order;
 
 use Magento\Config\Model\Config\Source\Yesno as YesNoOptionProvider;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Payment\Model\Method\Logger;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\CartItemInterface;
@@ -68,6 +69,7 @@ class ShoppingCartDataDebugLogger
      * @param CartInterface $quote
      * @param ShoppingCart $shoppingCart
      * @return void
+     * @throws NoSuchEntityException
      */
     public function log(CartInterface $quote, ShoppingCart $shoppingCart): void
     {
@@ -78,6 +80,7 @@ class ShoppingCartDataDebugLogger
      * @param CartInterface $quote
      * @param ShoppingCart $shoppingCart
      * @return array
+     * @throws NoSuchEntityException
      */
     private function prepareData(CartInterface $quote, ShoppingCart $shoppingCart): array
     {
@@ -212,7 +215,8 @@ class ShoppingCartDataDebugLogger
             'base_row_total_incl_tax' => $item->getBaseRowTotalInclTax(),
             'discount_percent' => $item->getDiscountPercent(),
             'discount_amount' => $item->getDiscountAmount(),
-            'base_discount_amount' => $item->getBaseDiscountAmount()
+            'base_discount_amount' => $item->getBaseDiscountAmount(),
+            'discount_tax_compensation_amount' => $item->getDiscountTaxCompensationAmount(),
         ];
     }
 }

@@ -15,6 +15,7 @@ class PaymentDataBuilder implements BuilderInterface
     public const AMOUNT = 'amount';
     public const REFERENCES = 'references';
     public const TOKEN = 'token';
+    public const PAYMENT_ID = 'payment_id';
 
     /**
      * @var SubjectReader
@@ -57,10 +58,6 @@ class PaymentDataBuilder implements BuilderInterface
         $references->setMerchantReference($order->getOrderIncrementId());
 
         $token = $payment->getAdditionalInformation('token_id');
-        if ($payment->getMethod() != ConfigProvider::CODE) {
-            $token = null;
-            $payment->setAdditionalInformation('token_id', $token);
-        }
         if (empty($token)) {
             if ($vaultPaymentToken = $payment->getExtensionAttributes()->getVaultPaymentToken()) {
                 $token = $vaultPaymentToken->getGatewayToken();
@@ -68,9 +65,10 @@ class PaymentDataBuilder implements BuilderInterface
         }
 
         return [
-            self::AMOUNT => $amountOfMoney,
+            self::AMOUNT => $amount,
             self::REFERENCES => $references,
             self::TOKEN => $token,
+            self::PAYMENT_ID => $payment->getAdditionalInformation('payment_id'),
         ];
     }
 }

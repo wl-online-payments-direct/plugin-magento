@@ -22,8 +22,8 @@ define([
             api_key_prod: '',
             api_secret: '',
             api_secret_prod: '',
-            api_test_endpoint: '',
-            api_prod_endpoint: '',
+            testing_api_url: '',
+            production_api_url: '',
             environment_mode: '',
             merchant_id: '',
             merchant_id_prod: ''
@@ -78,23 +78,20 @@ define([
                     result = self.options.successText;
                     alert({
                         title: $.mage.__('Success!'),
-                        content: $.mage.__('Press OK to save'),
-                        actions: {
-                            always: function () {
+                        buttons: [{
+                            text: $.mage.__('Save'),
+                            class: 'action-primary action-accept',
+                            click: function () {
+                                this.closeModal(true);
                                 $('form#config-edit-form').trigger('save');
                             }
-                        }
+                        }]
                     });
                 } else {
                     msg = response.errorMessage;
                     if (msg) {
                         alert({
-                            content: $.mage.__('Something went wrong. Please check your credentials'),
-                            actions: {
-                                always: function () {
-                                    location.reload();
-                                }
-                            }
+                            content: $.mage.__('Something went wrong. Please check your credentials')
                         });
                     }
                 }

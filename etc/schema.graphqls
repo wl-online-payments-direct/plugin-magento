@@ -18,11 +18,12 @@ input PaymentMethodInput {
 
 input WorldlineCcInput {
     is_active_payment_token_enabler: Boolean! @doc(description:"States whether an entered by a customer credit/debit card should be tokenized for later usage. Required only if Vault is enabled for Worldline payment integration.")
-    hosted_tokenization_id: String @doc(description:"Contains a hosted tokenization id session provided by Worldline SDK and should be sent with sale transaction details to the Worldline payment gateway. ")
+    hosted_tokenization_id: String @doc(description:"Contains a hosted tokenization id session provided by Worldline SDK and should be sent with sale transaction details to the Worldline payment gateway.")
 }
 
 input WorldlineVaultInput {
     public_hash: String!
+    hosted_tokenization_id: String @doc(description:"Contains a hosted tokenization id session provided by Worldline SDK and should be sent with sale transaction details to the Worldline payment gateway.")
 }
 
 type AvailablePaymentMethod {
@@ -48,7 +49,9 @@ type ProcessPaymentResultOutput {
 }
 
 type StoreConfig @doc(description: "The type contains information about a store config") {
-    worldline_cc_vault_active: String @doc(description: "Wordline cc vault status.")
+    worldline_cc_vault_active: String @doc(description: "Worldline CC vault status")
+    worldline_credit_card_pwa_route: String @doc(description: "Worldline CC Custom Return URL")
+    worldline_hosted_checkout_pwa_route: String @doc(description: "Worldline HC Custom Return URL")
     worldline_payment_credit_card_allowspecific: Boolean @doc(description: "CC: Payment from Applicable Countries")
     worldline_payment_credit_card_specificcountry: String @doc(description: "CC: Payment from Specific Countries")
     worldline_payment_hosted_checkout_allowspecific: Boolean @doc(description: "HC: Payment from Applicable Countries")
@@ -56,10 +59,11 @@ type StoreConfig @doc(description: "The type contains information about a store 
 }
 
 type Mutation {
-    processHCRedirectRequest(input: ProcessHCRedirectRequestInput): ProcessPaymentRedirectOutput @resolver(class: "\\Worldline\\Payment\\HostedCheckout\\GraphQl\\Resolver\\RequestRedirect") @doc(description: "Process hosted checkout redirect request.")
+    processCCCreateRequest(input: ProcessRequestInput): ProcessPaymentRequestOutput @resolver(class: "\\Worldline\\Payment\\CreditCard\\GraphQl\\Resolver\\CreateRequest") @doc(description: "Process credit card create request.")
+    processHCRedirectRequest(input: ProcessRequestInput): ProcessPaymentRequestOutput @resolver(class: "\\Worldline\\Payment\\HostedCheckout\\GraphQl\\Resolver\\RequestRedirect") @doc(description: "Process hosted checkout redirect request.")
 }
 
-input ProcessHCRedirectRequestInput @doc(description: "Defines the input to run the processHCRedirectRequest mutation") {
+input ProcessRequestInput @doc(description: "Defines the input to run the processHCRedirectRequest mutation") {
     cart_id: String! @doc(description: "The unique ID of a `Cart` object.")
     payment_method: PaymentMethodHCRedirectInput! @doc(description: "The payment method data.")
 }
@@ -68,6 +72,6 @@ input PaymentMethodHCRedirectInput {
     code: String! @doc(description: "The internal name for the payment method.")
 }
 
-type ProcessPaymentRedirectOutput {
+type ProcessPaymentRequestOutput {
     redirect_url: String
 }

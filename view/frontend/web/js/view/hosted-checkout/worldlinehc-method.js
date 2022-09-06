@@ -3,8 +3,9 @@ define([
     'Magento_Checkout/js/view/payment/default',
     'Magento_Vault/js/view/payment/vault-enabler',
     'Worldline_Payment/js/view/hosted-checkout/redirect',
-    'Magento_Checkout/js/model/full-screen-loader'
-], function ($, Component, VaultEnabler, placeOrderAction, fullScreenLoader) {
+    'Magento_Checkout/js/model/full-screen-loader',
+    'Worldline_Payment/js/model/device-data'
+], function ($, Component, VaultEnabler, placeOrderAction, fullScreenLoader, deviceData) {
     'use strict';
 
     return Component.extend({
@@ -97,6 +98,18 @@ define([
             );
 
             return true;
+        },
+
+        /**
+         * @returns {Object}
+         */
+        getData: function () {
+            let data = this._super();
+            data.additional_data = deviceData.getData();
+
+            this.vaultEnabler.visitAdditionalData(data);
+
+            return data;
         }
     });
 });

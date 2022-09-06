@@ -7,10 +7,11 @@ namespace Worldline\Payment\HostedCheckout\Service\Creator;
 use Magento\Quote\Api\Data\CartInterface;
 use OnlinePayments\Sdk\Domain\CreateHostedCheckoutRequest;
 use OnlinePayments\Sdk\Domain\CreateHostedCheckoutRequestFactory;
-use Worldline\Payment\HostedCheckout\Service\Creator\Request\OrderDataBuilder;
-use Worldline\Payment\HostedCheckout\Service\Creator\Request\SpecificInputDataBuilder;
-use Worldline\Payment\HostedCheckout\Service\Creator\Request\RedirectPaymentMethodSpecificInputDataBuilder;
 use Worldline\Payment\HostedCheckout\Service\Creator\Request\CardPaymentMethodSpecificInputDataBuilder;
+use Worldline\Payment\HostedCheckout\Service\Creator\Request\OrderDataBuilder;
+use Worldline\Payment\HostedCheckout\Service\Creator\Request\RedirectPaymentMethodSpecificInputDataBuilder;
+use Worldline\Payment\HostedCheckout\Service\Creator\Request\SepaDirectDebitPaymentMethodSpecificInputBuilder;
+use Worldline\Payment\HostedCheckout\Service\Creator\Request\SpecificInputDataBuilder;
 
 class RequestBuilder
 {
@@ -39,18 +40,25 @@ class RequestBuilder
      */
     private $cardPaymentMethodSpecificInputDataBuilder;
 
+    /**
+     * @var SepaDirectDebitPaymentMethodSpecificInputBuilder
+     */
+    private $debitPaymentMethodSpecificInputBuilder;
+
     public function __construct(
         CreateHostedCheckoutRequestFactory $createHostedCheckoutRequestFactory,
         OrderDataBuilder $orderDataBuilder,
         SpecificInputDataBuilder $specificInputDataBuilder,
         RedirectPaymentMethodSpecificInputDataBuilder $redirectPaymentMethodSpecificInputDataBuilder,
-        CardPaymentMethodSpecificInputDataBuilder $cardPaymentMethodSpecificInputDataBuilder
+        CardPaymentMethodSpecificInputDataBuilder $cardPaymentMethodSpecificInputDataBuilder,
+        SepaDirectDebitPaymentMethodSpecificInputBuilder $debitPaymentMethodSpecificInputBuilder
     ) {
         $this->createHostedCheckoutRequestFactory = $createHostedCheckoutRequestFactory;
         $this->orderDataBuilder = $orderDataBuilder;
         $this->specificInputDataBuilder = $specificInputDataBuilder;
         $this->redirectPaymentMethodSpecificInputDataBuilder = $redirectPaymentMethodSpecificInputDataBuilder;
         $this->cardPaymentMethodSpecificInputDataBuilder = $cardPaymentMethodSpecificInputDataBuilder;
+        $this->debitPaymentMethodSpecificInputBuilder = $debitPaymentMethodSpecificInputBuilder;
     }
 
     /**
@@ -67,6 +75,9 @@ class RequestBuilder
         );
         $createHostedCheckoutRequest->setCardPaymentMethodSpecificInput(
             $this->cardPaymentMethodSpecificInputDataBuilder->build($quote)
+        );
+        $createHostedCheckoutRequest->setSepaDirectDebitPaymentMethodSpecificInput(
+            $this->debitPaymentMethodSpecificInputBuilder->build($quote)
         );
 
         return $createHostedCheckoutRequest;

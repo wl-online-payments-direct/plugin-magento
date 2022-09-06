@@ -46,6 +46,9 @@ class RequestResult implements ResolverInterface
             return [];
         }
 
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        sleep(2); // wait for the webhook
+
         try {
             return [
                 'result' => 'success',

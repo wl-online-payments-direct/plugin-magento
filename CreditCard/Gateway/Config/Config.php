@@ -45,19 +45,11 @@ class Config extends PaymentGatewayConfig
         $this->appState = $appState;
     }
 
-    /**
-     * @param null $storeId
-     * @return string
-     */
     public function getTemplateId($storeId = null): string
     {
         return (string) $this->getValue(self::TEMPLATE_ID, $storeId);
     }
 
-    /**
-     * @param null $storeId
-     * @return string
-     */
     public function getAuthorizationMode($storeId = null): string
     {
         $authorizationMode = (string) $this->getValue(self::AUTHORIZATION_MODE, $storeId);
@@ -69,10 +61,6 @@ class Config extends PaymentGatewayConfig
         }
     }
 
-    /**
-     * @param null $storeId
-     * @return bool
-     */
     public function hasSkipAuthentication($storeId = null): bool
     {
         return (bool) $this->getValue(self::SKIP_3D, $storeId);
@@ -90,24 +78,14 @@ class Config extends PaymentGatewayConfig
             return $pwaRoute;
         }
 
-        return $this->urlBuilder->getUrl('worldline/payment/result');
+        return $this->urlBuilder->getUrl('worldline/creditCard/returnThreeDSecure');
     }
 
-    /**
-     * Gets Payment configuration status
-     *
-     * @param int|null $storeId
-     * @return bool
-     */
     public function isActive(?int $storeId = null): bool
     {
         return (bool) $this->getValue(self::KEY_ACTIVE, $storeId);
     }
 
-    /**
-     * @param int|null $storeId
-     * @return string
-     */
     public function getCcTypes(?int $storeId = null): string
     {
         return (string) $this->getValue(self::CC_TYPES, $storeId);

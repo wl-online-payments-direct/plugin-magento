@@ -42,10 +42,6 @@ class RequestProcessor
 
     public function getWebhookEvent(string $body, string $signature, string $keyId): ?WebhooksEvent
     {
-        if (!$this->webhookConfig->isReceivingWebhooksAllowed()) {
-            return null;
-        }
-
         $secretKeyStore = $this->inMemorySecretKeyStoreFactory->create([
             'secretKeys' => [
                 $this->webhookConfig->getKey() => $this->webhookConfig->getSecretKey()

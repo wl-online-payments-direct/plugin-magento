@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace Worldline\Payment\CreditCard\Gateway\Response;
 
-use DateInterval;
-use DateTime;
-use DateTimeZone;
 use Exception;
-use Magento\Framework\Exception\InputException;
-use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Payment\Gateway\Response\HandlerInterface;
 use Magento\Payment\Model\InfoInterface;
 use Magento\Sales\Api\Data\OrderPaymentExtensionInterface;
@@ -18,13 +12,10 @@ use Magento\Sales\Api\Data\OrderPaymentExtensionInterfaceFactory;
 use Magento\Vault\Api\Data\PaymentTokenFactoryInterface;
 use Magento\Vault\Api\Data\PaymentTokenInterface;
 use OnlinePayments\Sdk\Domain\PaymentResponse;
-use RuntimeException;
 use Worldline\Payment\Gateway\SubjectReader;
+use Worldline\Payment\Model\CardDate;
 use Worldline\Payment\Model\Config\WorldlineConfig;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class VaultDetailsHandler implements HandlerInterface
 {
     /**
@@ -48,38 +39,29 @@ class VaultDetailsHandler implements HandlerInterface
     private $worldlineConfig;
 
     /**
-     * @var Json
+     * @var CardDate
      */
-    private $serializer;
+    private $cardDate;
 
-    /**
-     * @param PaymentTokenFactoryInterface $paymentTokenFactory
-     * @param OrderPaymentExtensionInterfaceFactory $paymentExtensionFactory
-     * @param SubjectReader $subjectReader
-     * @param WorldlineConfig $worldlineConfig
-     * @param Json $serializer
-     * @throws RuntimeException
-     */
     public function __construct(
         PaymentTokenFactoryInterface $paymentTokenFactory,
         OrderPaymentExtensionInterfaceFactory $paymentExtensionFactory,
         SubjectReader $subjectReader,
         WorldlineConfig $worldlineConfig,
-        Json $serializer
+        CardDate $cardDate
     ) {
         $this->paymentTokenFactory = $paymentTokenFactory;
         $this->paymentExtensionFactory = $paymentExtensionFactory;
         $this->subjectReader = $subjectReader;
         $this->worldlineConfig = $worldlineConfig;
-        $this->serializer = $serializer;
+        $this->cardDate = $cardDate;
     }
 
     /**
      * @param array $handlingSubject
      * @param array $response
      * @return void
-     * @throws InputException
-     * @throws NoSuchEntityException
+     * @throws Exception
      */
     public function handle(array $handlingSubject, array $response): void
     {
@@ -96,11 +78,9 @@ class VaultDetailsHandler implements HandlerInterface
     }
 
     /**
-     * Get vault payment token entity
-     *
      * @param PaymentResponse $transaction
      * @return PaymentTokenInterface|null
-     * @throws InputException|NoSuchEntityException|Exception
+     * @throws Exception
      */
     private function getVaultPaymentToken(PaymentResponse $transaction): ?PaymentTokenInterface
     {
@@ -113,75 +93,18 @@ class VaultDetailsHandler implements HandlerInterface
 
         $paymentToken = $this->paymentTokenFactory->create(PaymentTokenFactoryInterface::TOKEN_TYPE_CREDIT_CARD);
         $paymentToken->setGatewayToken($token);
-        $expirationDate = $this->getExpirationDateAt($transaction);
+        $expirationDate = $this->cardDate->getExpirationDateAt($cardPaymentMethodSpecificOutput);
         $paymentToken->setExpiresAt($expirationDate);
-        $paymentToken->setTokenDetails($this->convertDetailsToJSON([
+        $paymentToken->setTokenDetails($this->cardDate->convertDetailsToJSON([
             'type' => $this->worldlineConfig->mapCcType($cardPaymentMethodSpecificOutput->getPaymentProductId()),
             'maskedCC' => $card->getCardNumber(),
-            'expirationDate' => $this->getExpirationDate($transaction)
+            'expirationDate' => $this->cardDate->getExpirationDate($cardPaymentMethodSpecificOutput)
         ]));
 
         return $paymentToken;
     }
 
     /**
-     * @param string $date
-     * @return DateTime
-     * @throws Exception
-     */
-    private function processDate(string $date): DateTime
-    {
-        return new DateTime(
-            mb_substr($date, -2)
-            . '-'
-            . mb_substr($date, 0, 2)
-            . '-'
-            . '01'
-            . ' '
-            . '00:00:00',
-            new DateTimeZone('UTC')
-        );
-    }
-
-    /**
-     * @param PaymentResponse $transaction
-     * @return string
-     * @throws Exception
-     */
-    private function getExpirationDate(PaymentResponse $transaction): string
-    {
-        $card = $transaction->getPaymentOutput()->getCardPaymentMethodSpecificOutput()->getCard();
-        $expirationDate = $this->processDate($card->getExpiryDate());
-        return $expirationDate->format('m/Y');
-    }
-
-    /**
-     * @param PaymentResponse $transaction
-     * @return string
-     * @throws Exception
-     */
-    private function getExpirationDateAt(PaymentResponse $transaction): string
-    {
-        $card = $transaction->getPaymentOutput()->getCardPaymentMethodSpecificOutput()->getCard();
-        $expirationDateAt = $this->processDate($card->getExpiryDate());
-        $expirationDateAt->add(new DateInterval('P1M'));
-        return $expirationDateAt->format('Y-m-d 00:00:00');
-    }
-
-    /**
-     * Convert payment token details to JSON
-     * @param array $details
-     * @return string
-     */
-    private function convertDetailsToJSON(array $details): string
-    {
-        $json = $this->serializer->serialize($details);
-        return $json ?: '{}';
-    }
-
-    /**
-     * Get payment extension attributes
-     *
      * @param InfoInterface $payment
      * @return OrderPaymentExtensionInterface
      */

@@ -1,9 +1,4 @@
 {
-    "sales_order_payment": {
-        "column": {
-            "worldline_payment_id": true
-        }
-    },
     "worldline_payment_log": {
         "column": {
             "log_id": true,
@@ -22,6 +17,36 @@
             "response_body": true,
             "response_code": true,
             "mark_as_processed": true,
+            "created_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "worldline_payment_refund_request": {
+        "column": {
+            "id": true,
+            "invoice_id": true,
+            "increment_id": true,
+            "creditmemo_id": true,
+            "amount": true,
+            "refunded": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "FK_477A40116EF3B505AF2CE7395E4D8BCF": true
+        }
+    },
+    "worldline_payment_transaction": {
+        "column": {
+            "entity_id": true,
+            "increment_id": true,
+            "status": true,
+            "status_code": true,
+            "amount": true,
+            "currency": true,
+            "transaction_id": true,
+            "additional_data": true,
             "created_at": true
         },
         "constraint": {

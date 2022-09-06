@@ -15,9 +15,9 @@ define([
         };
 
         if (customer.isLoggedIn()) {
-            serviceUrl = urlBuilder.createUrl('/carts/mine/hosted-checkout-redirect', {});
+            serviceUrl = urlBuilder.createUrl('/carts/mine/worldline/hosted-checkout-redirect', {});
         } else {
-            serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/hosted-checkout-redirect', {
+            serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/worldline/hosted-checkout-redirect', {
                 cartId: quote.getQuoteId()
             });
             payload.email = quote.guestEmail;

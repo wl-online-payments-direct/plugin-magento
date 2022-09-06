@@ -5,6 +5,8 @@
         <arguments>
             <argument name="extendedConfigData" xsi:type="array">
                 <item name="worldline_cc_vault_active" xsi:type="string">payment/worldline_cc_vault/active</item>
+                <item name="worldline_credit_card_pwa_route" xsi:type="string">payment/worldline_cc/pwa_route</item>
+                <item name="worldline_hosted_checkout_pwa_route" xsi:type="string">payment/worldline_hosted_checkout/pwa_route</item>
                 <item name="worldline_payment_credit_card_allowspecific" xsi:type="string">payment/worldline_cc/allowspecific</item>
                 <item name="worldline_payment_credit_card_specificcountry" xsi:type="string">payment/worldline_cc/specificcountry</item>
                 <item name="worldline_payment_hosted_checkout_allowspecific" xsi:type="string">payment/worldline_hosted_checkout/allowspecific</item>
@@ -17,9 +19,9 @@
         <arguments>
             <argument name="dataProviders" xsi:type="array">
                 <item name="worldline_cc" xsi:type="object">Worldline\Payment\CreditCard\GraphQl\Model\AdditionalDataProvider</item>
-                <item name="worldline_cc_vault" xsi:type="object">Worldline\Payment\Model\VaultDataProvider</item>
+                <item name="worldline_cc_vault" xsi:type="object">Worldline\Payment\CreditCard\GraphQl\Model\VaultDataProvider</item>
                 <item name="worldline_hosted_checkout" xsi:type="object">Worldline\Payment\HostedCheckout\GraphQl\Model\AdditionalDataProvider</item>
-                <item name="worldline_hosted_checkout_vault" xsi:type="object">Worldline\Payment\Model\VaultDataProvider</item>
+                <item name="worldline_hosted_checkout_vault" xsi:type="object">Worldline\Payment\HostedCheckout\GraphQl\Model\VaultDataProvider</item>
             </argument>
         </arguments>
     </type>
@@ -28,5 +30,10 @@
         <plugin sortOrder="100"
                 name="WorldlinePaymentGraphQlPaymentTokens"
                 type="Worldline\Payment\GraphQl\Plugin\Model\Resolver\PaymentTokens"/>
+    </type>
+
+    <type name="Magento\SalesGraphQl\Model\Order\OrderPayments">
+        <plugin name="WorldlinePaymentGraphQlAddPaymentDetails"
+                type="Worldline\Payment\GraphQl\Plugin\Model\Order\OrderPayments\AddPaymentDetails"/>
     </type>
 </config>

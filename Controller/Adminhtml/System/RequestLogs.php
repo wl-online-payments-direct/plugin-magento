@@ -9,6 +9,9 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 
+/**
+ * @core
+ */
 class RequestLogs extends Action implements HttpGetActionInterface
 {
     /**

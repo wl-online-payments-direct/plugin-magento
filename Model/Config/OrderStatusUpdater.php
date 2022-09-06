@@ -38,14 +38,6 @@ class OrderStatusUpdater
     }
 
     /**
-     * @return bool
-     */
-    public function isReceivingWebhooksAllowed(): bool
-    {
-        return (bool) $this->getValue('allow_receiving_webhooks');
-    }
-
-    /**
      * @return string
      */
     public function getKey(): string

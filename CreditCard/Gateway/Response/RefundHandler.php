@@ -6,9 +6,7 @@ namespace Worldline\Payment\CreditCard\Gateway\Response;
 
 use Magento\Payment\Gateway\Response\HandlerInterface;
 use Magento\Sales\Model\Order\Payment;
-use OnlinePayments\Sdk\Domain\RefundResponse as WorldlineResponse;
 use Worldline\Payment\Gateway\SubjectReader;
-use Worldline\Payment\Model\AdditionalInfoInterface;
 
 class RefundHandler implements HandlerInterface
 {
@@ -40,7 +38,6 @@ class RefundHandler implements HandlerInterface
         if ($paymentDO->getPayment() instanceof Payment) {
             /** @var Payment $orderPayment */
             $orderPayment = $paymentDO->getPayment();
-            $this->fillAdditionalInfo($orderPayment, $response['object']);
             $orderPayment->setIsTransactionClosed($this->shouldCloseTransaction());
             $closed = $this->shouldCloseParentTransaction($orderPayment);
             $orderPayment->setShouldCloseParentTransaction($closed);
@@ -54,26 +51,10 @@ class RefundHandler implements HandlerInterface
 
     protected function shouldCloseParentTransaction(Payment $orderPayment): bool
     {
+        if (!$orderPayment->getCreditmemo()) {
+            return false;
+        }
+
         return !$orderPayment->getCreditmemo()->getInvoice()->canRefund();
-    }
-
-    //TODO: Need to work around with cases of multiple partial refunds (to not override stored data)
-    private function fillAdditionalInfo(Payment $orderPayment, WorldlineResponse $response): void
-    {
-        $amountModel = $response->getRefundOutput()->getAmountOfMoney();
-
-        $orderPayment->setAdditionalInformation(
-            AdditionalInfoInterface::KEY_REFUND_TRANSACTION_ID,
-            $response->getId()
-        )->setAdditionalInformation(
-            AdditionalInfoInterface::KEY_STATUS,
-            $response->getStatus()
-        )->setAdditionalInformation(
-            AdditionalInfoInterface::KEY_STATUS_CODE,
-            $response->getStatusOutput()->getStatusCode()
-        )->setAdditionalInformation(
-            AdditionalInfoInterface::KEY_REFUND_AMOUNT,
-            ($amountModel->getAmount() / 100) . ' ' . $amountModel->getCurrencyCode()
-        );
     }
 }

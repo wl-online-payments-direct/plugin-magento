@@ -17,6 +17,8 @@ use Worldline\Payment\Logger\RequestLogManager;
 use Worldline\Payment\Model\TrackerDataProvider;
 
 /**
+ * @core
+ *
  * @codingStandardsIgnoreFile
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */

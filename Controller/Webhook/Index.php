@@ -17,6 +17,9 @@ use Psr\Log\LoggerInterface;
 use Worldline\Payment\Model\Webhook\RequestProcessor;
 use Worldline\Payment\Model\Webhook\GeneralProcessor;
 
+/**
+ * @core
+ */
 class Index implements CsrfAwareActionInterface, HttpPostActionInterface
 {
     /**
