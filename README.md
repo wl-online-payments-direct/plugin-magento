@@ -1,10 +1,14 @@
-# Worldline Online Payments 
+# Worldline Online Payments
 
-Realized payment methods:
+The package includes the following payment methods:
 - credit card
 - hosted checkout
 
 Change log:
+
+2.0.0
+- module segregation
+- bug fix and general improvements
 
 1.3.1
 - graphQL bug fix
