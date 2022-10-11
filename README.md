@@ -6,6 +6,14 @@ The package includes the following payment methods:
 
 Change log:
 
+2.1.0
+- New Redirect payments: integrate single payment buttons directly on Magento checkout
+- Waiting page has been added after payment is done to correctly process webhooks and create the order
+- Asyncronic order creation through get calls when webhooks suffer delay
+- Refund flow is improved for multi-website instances
+- Bancontact payment method implementation has been improved
+- General improvements and bug fixes
+
 2.0.0
 - module segregation
 - bug fix and general improvements

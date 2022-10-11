@@ -4,11 +4,12 @@
     "require": {
         "php": "~7.3.0||~7.4.0||~8.1.0",
         "ext-json": "*",
-        "worldline/module-magento-payment-credit-card": "*",
-        "worldline/module-magento-payment-hosted-checkout": "*"
+        "worldline/module-magento-payment-credit-card": "1.1.0",
+        "worldline/module-magento-payment-hosted-checkout": "1.1.0",
+        "worldline/module-magento-payment-redirect-payment": "1.0.0"
     },
     "type": "magento2-module",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "license": [
         "OSL-3.0"
     ],
