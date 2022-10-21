@@ -3,8 +3,15 @@
 The package includes the following payment methods:
 - credit card
 - hosted checkout
+- redirect payment (single payment buttons)
 
 Change log:
+
+2.1.1
+- Hide the checkbox "save card" for iFrame checkout (Credit Card payment method) for guests and when the vault is disabled
+- Support version 4.3.3 of Worldline SDK
+- PWA improvements and support
+- Bug fixes and general code improvements
 
 2.1.0
 - New Redirect payments: integrate single payment buttons directly on Magento checkout
