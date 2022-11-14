@@ -4,12 +4,15 @@
     "require": {
         "php": "~7.3.0||~7.4.0||~8.1.0",
         "ext-json": "*",
-        "worldline/module-magento-payment-credit-card": "1.1.1",
-        "worldline/module-magento-payment-hosted-checkout": "1.1.1",
-        "worldline/module-magento-payment-redirect-payment": "1.0.1"
+        "worldline/module-magento-payment-credit-card": "*",
+        "worldline/module-magento-payment-hosted-checkout": "*",
+        "worldline/module-magento-payment-redirect-payment": "*"
+    },
+    "suggest": {
+        "worldline/module-magento-recurring-payments": "Allow recurring payments"
     },
     "type": "magento2-module",
-    "version": "2.1.1",
+    "version": "2.2.0",
     "license": [
         "OSL-3.0"
     ],
