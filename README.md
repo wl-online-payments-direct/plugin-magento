@@ -5,7 +5,16 @@ The package includes the following payment methods:
 - hosted checkout
 - redirect payment (single payment buttons)
 
+Suggested packages:
+- recurring payments
+
 Change log:
+
+2.2.0
+- Support recurring payments based on Amasty recurring payment extension
+- Improve waiting page by adding an order summary block so that customers will always see what they have bought
+- Improve payment info block within Magento backend. Merchants can now manually refresh the info available to be sure it is always up to date
+- General improvements and bug fixes
 
 2.1.1
 - Hide the checkbox "save card" for iFrame checkout (Credit Card payment method) for guests and when the vault is disabled
@@ -22,31 +31,31 @@ Change log:
 - General improvements and bug fixes
 
 2.0.0
-- module segregation
-- bug fix and general improvements
+- Module segregation
+- Bug fix and general improvements
 
 1.3.1
-- graphQL bug fix
+- GraphQL bug fix
 
 1.3.0
-- credit card payment method improvements
-- new flow for the refunds: pending, refunded statuses for the refund items
-- support Sepa methods for the hosted checkout payment method
-- bug fix and general improvements
+- Credit card payment method improvements
+- New flow for the refunds: pending, refunded statuses for the refund items
+- Support Sepa methods for the hosted checkout payment method
+- Bug fix and general improvements
 
 1.2.0
-- hosted checkout payment method improvements
-- show Worldline information in order overview pages: frontend and backend
-- add the Worldline request logs grid
-- compatibility with Magento 2.3.7
-- bug fix and general improvements
+- Hosted checkout payment method improvements
+- Show Worldline information in order overview pages: frontend and backend
+- Add the Worldline request logs grid
+- Compatibility with Magento 2.3.7
+- Bug fix and general improvements
 
 1.1.0
 - PWA support
-- log Worldline requests feature
-- support of new version of the SDK
-- compatibility with Magento 2.4.4
-- bug fix
+- Log Worldline requests feature
+- Support of new version of the SDK
+- Compatibility with Magento 2.4.4
+- Bug fix
 
 1.0.0
-- Initial MVP version 
+- Initial MVP version
