@@ -12,7 +12,7 @@
         "worldline/module-magento-recurring-payments": "Allow recurring payments"
     },
     "type": "magento2-module",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "license": [
         "OSL-3.0"
     ],
