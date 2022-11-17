@@ -10,6 +10,9 @@ Suggested packages:
 
 Change log:
 
+2.2.1
+- Fix cron run time to prevent order duplication
+
 2.2.0
 - Support recurring payments based on Amasty recurring payment extension
 - Improve waiting page by adding an order summary block so that customers will always see what they have bought
