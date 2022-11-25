@@ -9,6 +9,8 @@ Suggested packages:
 - recurring payments
 
 Change log:
+2.2.3
+- Improve work for multi website instances
 
 2.2.2
 - Improve the "waiting" page
