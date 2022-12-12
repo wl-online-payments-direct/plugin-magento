@@ -9,6 +9,16 @@ Suggested packages:
 - recurring payments
 
 Change log:
+
+2.3.0
+- Improve configuration settings for Redirect Payments  (single payment button)
+- Add new payment product Oney for Redirect Payments  (single payment button)
+- Option added to enforce Strong Customer Authentication for every 3DS request
+- Improved design of general settings page
+- General code improvements and bug fixes
+- Improvements and support for 2.3.x Magento versions
+- Support the 4.5.0 version of the Worldline SDK
+
 2.2.3
 - Improve work for multi website instances
 
