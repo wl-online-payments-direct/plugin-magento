@@ -10,9 +10,13 @@ Suggested packages:
 
 Change log:
 
+2.3.1
+- Bug fixes for Redirect Payments (single payment button)
+- GraphQl improvements and support for Redirect Payments (single payment button)
+
 2.3.0
-- Improve configuration settings for Redirect Payments  (single payment button)
-- Add new payment product Oney for Redirect Payments  (single payment button)
+- Improve configuration settings for Redirect Payments (single payment button)
+- Add new payment product Oney for Redirect Payments (single payment button)
 - Option added to enforce Strong Customer Authentication for every 3DS request
 - Improved design of general settings page
 - General code improvements and bug fixes
