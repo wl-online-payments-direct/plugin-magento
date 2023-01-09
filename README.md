@@ -10,6 +10,15 @@ Suggested packages:
 
 Change log:
 
+2.4.0
+- Add "groupCards" functionality (for hosted checkout): group all card under one single payment button.
+- Add payment method Intersolve and process the split payment.
+- Improve Worldline payment box design: split in payment and fraud results.
+- Add a feature to request 3DS exemption for transactions below 30 EUR.
+- Add translations.
+- Add integration tests (for credit card).
+- General code improvements and bug fixes.
+
 2.3.1
 - Bug fixes for Redirect Payments (single payment button)
 - GraphQl improvements and support for Redirect Payments (single payment button)
