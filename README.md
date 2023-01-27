@@ -19,6 +19,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.5.1
+- Add notification to merchants if order creation is failed.
+
 #### 2.5.0
 - Add the "Mealvouchers" payment method.
 - Add the “Update Status” button for “View Memo”. This allows you to refresh in real time the status of your credit memos.
