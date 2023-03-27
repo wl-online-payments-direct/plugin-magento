@@ -38,7 +38,7 @@ that at any time your Magento is fully up to date with the latest payment inform
 
 - **Basket is kept when clicking on “back”:** what is more frustrating that losing your basket when you click on “back” in your
   browser? Our plugin offers a native solution for this problematic!
-- **Dynamic feedback feedback:** our plugin will listen to feedback from Worldline to update the transaction status, while
+- **Dynamic feedback:** our plugin will listen to feedback from Worldline to update the transaction status, while
   actively questioning the payment system to make sure no discrepancy occurs on your platform.
 - **Submit basket details to the payment page:** on top of providing a best-in-class customer experience, this will also enable
   some specific payment methods like Klarna on your checkout page. The order data from the cart will be displayed on the
@@ -77,6 +77,16 @@ Suggested packages:
 - [recurring payments](https://github.com/wl-online-payments-direct/plugin-magento-recurring-payments)
 
 ### Change log:
+
+#### 2.7.0
+- Add surcharge functionality (for the Australian market).
+- Add Sepa Direct Debit payment method.
+- Add Sepa Direct Debit payment method for recurring payments.
+- Add the ability to save the Sepa Direct Debit mandate and use it through the Magento vault.
+- Improvements of the Oney3x4x payment method.
+- Extract GraphQl into a dedicated extension.
+- Add Integration tests for the credit card payment method.
+- General code improvements and bug fixes.
 
 #### 2.6.1
 - Support the 13.0.0 version of PWA.
