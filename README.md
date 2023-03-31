@@ -78,6 +78,14 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.7.1
+- Add auto refund functionality when an item has fallen out of stock when order is completed, additional admin notification will be sent when an auto refund attempt is made.
+- Improve performance on the checkout cart page.
+- Add backend address validation before payments.
+- Add admin notifications in case an order creation fails.
+- Add button called “Update data from Worldline” to update Worldline payment information in case it should be incomplete or missing.
+- General code improvements and bug fixes.
+
 #### 2.7.0
 - Add surcharge functionality (for the Australian market).
 - Add Sepa Direct Debit payment method.
