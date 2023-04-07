@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.7.2
+- Add fix for Adobe Commerce cloud instances.
+
 #### 2.7.1
 - Add auto refund functionality when an item has fallen out of stock when order is completed, additional admin notification will be sent when an auto refund attempt is made.
 - Improve performance on the checkout cart page.
