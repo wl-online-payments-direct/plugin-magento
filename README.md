@@ -78,6 +78,18 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.8.0
+- Add support for Magento 2.4.6.
+- Add support for the 5.0.0 version of PHP SDK.
+- Unhide API keys for the connection and webhooks.
+- Unhide first 5 characters of the API secret keys for the connection and webhooks.
+- Add a setting for Oney3x4x to manage the “Oney3x4x payment option” parameter.
+- Hide Apple Pay if the customer cannot pay with it.
+- Add support for the 13.0.0 PWA version and the surcharging functionality.
+- Add integration tests.
+- Add Amasty one-step checkout and surcharging functionality comparability.
+- General code improvements.
+
 #### 2.7.2
 - Add fix for Adobe Commerce cloud instances.
 
