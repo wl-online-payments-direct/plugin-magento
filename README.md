@@ -78,6 +78,11 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.8.1
+- Add support for the 5.1.0 version of PHP SDK.
+- Add integration tests.
+- General code improvements.
+
 #### 2.8.0
 - Add support for Magento 2.4.6.
 - Add support for the 5.0.0 version of PHP SDK.
