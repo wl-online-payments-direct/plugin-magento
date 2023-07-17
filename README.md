@@ -78,6 +78,15 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.9.0
+- Added new payment method “Giftcard Limonetik".
+- Added new setting "Enable Sending Payment Refused Emails".
+- Improved handling of Magento 2 display errors.
+- Fixed hosted tokenization js link for production transactions.
+- Fixed order creation issue on successful transactions.
+- Fixed webhooks issue for rejected transactions with empty refund object.
+- General code improvements.
+
 #### 2.8.3
 - Fixed issue of products with special pricing not displaying the original price in order view.
 - Fixed issue with configurable product on cart restoration when user clicks the browser back button.
