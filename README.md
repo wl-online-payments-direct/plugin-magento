@@ -4,11 +4,11 @@
 
 Our plugin supports from the most global to very local payment methods to support business all over the world:
 
-- **Credit and debit cards:** Visa, Mastercard, American Express, Carte Bancaire, Diners, JCB, Maestro
+- **Credit and debit cards:** Visa, Mastercard, American Express, Carte Bancaire, Diners, JCB, Maestro, Union Pay International
 - **Mobile payment methods:** Alipay, Apple Pay, Google Pay, WeChatPay
 - **Buy Now Pay Later:** Klarna, Oney 3x-4x, Oney Financement Long,
-- **Alternative payment methods:** iDEAL, Bancontact, Paypal, Bizum, Cpay, Multibanco
-- **Giftcards:** Intersolve gift cards, OneyBrandedGiftCard, Illicado
+- **Alternative payment methods:** iDEAL, Bancontact, Paypal, Bizum, Cpay, Multibanco, Przelewy24, Twint, EPS
+- **Giftcards:** Intersolve gift cards, OneyBrandedGiftCard, Illicado, Giftcard Limonetik
 
 **Process high-conversion payments**
 
@@ -77,6 +77,17 @@ Suggested packages:
 - [recurring payments](https://github.com/wl-online-payments-direct/plugin-magento-recurring-payments)
 
 ### Change log:
+
+#### 2.10.0
+- Added new payment method “Union Pay International".
+- Added new payment method “Przelewy24".
+- Added new payment method “EPS".
+- Added new payment method “Twint".
+- Added compatibility with Php Sdk 5.6.0.
+- Added compatibility with Amasty Subscriptions & Recurring Payments extension 1.6.15.
+- Improved plugin landing page "About Worldline".
+- Improved Hosted Tokenization error message when transaction is declined.
+- Improved concatenation of streetline1 and streetline2 for billing & shipping address.
 
 #### 2.9.0
 - Added new payment method “Giftcard Limonetik".
