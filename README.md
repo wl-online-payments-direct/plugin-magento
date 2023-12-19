@@ -5,9 +5,9 @@
 Our plugin supports from the most global to very local payment methods to support business all over the world:
 
 - **Credit and debit cards:** Visa, Mastercard, American Express, Carte Bancaire, Diners, JCB, Maestro, Union Pay International
-- **Mobile payment methods:** Alipay, Apple Pay, Google Pay, WeChatPay
+- **Mobile payment methods:** Alipay+, Apple Pay, Google Pay, WeChatPay
 - **Buy Now Pay Later:** Klarna, Oney 3x-4x, Oney Financement Long,
-- **Alternative payment methods:** iDEAL, Bancontact, Paypal, Bizum, Cpay, Multibanco, Przelewy24, Twint, EPS
+- **Alternative payment methods:** iDEAL, Bancontact, PayPal, Bizum, Cpay, Multibanco, Przelewy24, Twint, EPS, Bank Transfer by Worldline
 - **Giftcards:** Intersolve gift cards, OneyBrandedGiftCard, Illicado, Giftcard Limonetik
 
 **Process high-conversion payments**
@@ -77,6 +77,15 @@ Suggested packages:
 - [recurring payments](https://github.com/wl-online-payments-direct/plugin-magento-recurring-payments)
 
 ### Change log:
+
+#### 2.14.0
+- Added new payment method "Bank Transfer by Worldline".
+- Added the "Contact email" field to the feature suggestion form.
+- Added compatibility with Php Sdk 5.10.0.
+- Replaced legacy Alipay payment method with the new Alipay+.
+- Replaced legacy WeChat Pay payment method with the new version.
+- Fixed validation error when placing orders with Virtual/downloadable products.
+- Fixed error when adding new shipping address on checkout.
 
 #### 2.13.0
 - Added email to customer and “Copy To” for "Auto Refund For Out Of Stock Orders" notifications.
