@@ -78,6 +78,10 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.15.0
+- Improved the order creation process by tracking multiple paymentIDs.
+- Improved logging and exception handling when multiple payments are done for a single order.
+
 #### 2.14.0
 - Added new payment method "Bank Transfer by Worldline".
 - Added the "Contact email" field to the feature suggestion form.
