@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.17.0
+- Improved display of shipping costs on the payment page for Hosted Checkout and Redirect Payment.
+
 #### 2.16.0
 - Added trusted URLs to the CSP whitelist.
 - Improved reliability of fallback cron job.
