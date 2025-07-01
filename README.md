@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.21.0
+- Update plugin translations
+
 #### 2.20.0
 - Added 3DS exemption types to the plugin
 
