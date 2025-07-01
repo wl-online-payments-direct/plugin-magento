@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.22.0
+- Fixed order creation using Google Pay & Apple Pay
+
 #### 2.21.0
 - Update plugin translations
 
