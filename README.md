@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.27.0
+- Fix comma separated email validation in notification settings
+
 #### 2.26.0
 - Fix issue with showing split payment amounts on order details page for Mealvoucher transactions
 - Fix issue with showing Mealvoucher in full redirect
