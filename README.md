@@ -78,6 +78,10 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.26.0
+- Fix issue with showing split payment amounts on order details page for Mealvoucher transactions
+- Fix issue with showing Mealvoucher in full redirect
+
 #### 2.25.0
 - Fix logo issue for CB on checkout page
 - Fix PHP >= 8.2 issue with not sending parameter by reference
