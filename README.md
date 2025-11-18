@@ -78,6 +78,13 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.32.0
+- Remove MealVouchers configuration from hosted checkout
+- Fix mobile payment method information not being shown in order details
+
+#### 2.31.0
+- Update payment brand logos
+
 #### 2.30.0
 - Add quote ID to request payload
 - Fix wrong IP address being sent on checkout
