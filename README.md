@@ -78,6 +78,10 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.35.0
+- Added: Possibility to auto-include primary webhooks URL in the payload of payment request, and to configure up to 4 additional endpoints.
+- Fix Worldline Block/Info.php not compatible with Magento core Payment/Block/Info.php.
+
 #### 2.34.0
 - Improved: Data mapping to flag correctly exemptions requests to 3-D Secure.
 
