@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+#### 2.34.0
+- Improved: Data mapping to flag correctly exemptions requests to 3-D Secure.
+
 #### 2.33.0
 - Add new payment method: Pledg
 
