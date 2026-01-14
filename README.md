@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+### 2.37.0
+- Remove Mealvouchers logo from checkout page when using "Hosted Checkout (redirect to Worldline)"
+
 #### 2.36.0
 - Fix: Do not allow usage of decimals in the object cardPaymentMethodSpecificInput.paymentProduct130SpecificInput.threeDSecure.numberOfItems
 
