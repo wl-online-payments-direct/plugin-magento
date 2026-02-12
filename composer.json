@@ -4,16 +4,16 @@
     "require": {
         "php": ">=7.3",
         "ext-json": "*",
-        "worldline/module-magento-payment-credit-card": "1.40.0",
-        "worldline/module-magento-payment-redirect-payment": "1.39.0",
-        "worldline/module-magento-payment-graph-ql": "1.32.0"
+        "worldline/module-magento-payment-credit-card": "1.42.0",
+        "worldline/module-magento-payment-redirect-payment": "1.41.0",
+        "worldline/module-magento-payment-graph-ql": "1.34.0"
     },
     "suggest": {
         "worldline/module-magento-recurring-payments": "Allow recurring payments",
         "worldline/module-magento-theme-hyva": "Hyva Luma checkout support"
     },
     "type": "magento2-module",
-    "version": "2.39.0",
+    "version": "2.41.0",
     "license": ["MIT"],
     "authors": [
         {
