@@ -78,6 +78,19 @@ Suggested packages:
 
 ### Change log:
 
+### 2.45.0
+- Fixed: Creating an online invoice for orders
+- Fixed: Amount discrepancy check for non-worldline methods
+- Added: Debug log for API call when the Worldline stored card is deleted
+- Fixed: Magento order display for transactions created with other WL account
+- Fixed: Create Magento order for GooglePay transaction
+
+### 2.44.0
+- Fixed: Prevented cart loss after cancelled or declined payments on the Hosted payment page
+
+### 2.43.0
+- Added: Deleting a consumer’s stored token from their account now also deletes the token on the payment platform
+
 ### 2.42.0
 - Updated: Change iDEAL logo and label
 - Updated: Branding of Pledg changed to Sofinco
