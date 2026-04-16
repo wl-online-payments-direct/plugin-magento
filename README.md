@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+### 2.47.0
+- Added: Linxo Connect payment method
+
 ### 2.46.0
 - Fixed: Handle formatting phone number when it is optional
 
