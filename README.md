@@ -78,6 +78,10 @@ Suggested packages:
 
 ### Change log:
 
+### 2.48.0
+- Added: Support for Illicado payment method
+- Upgrade PHP SDK to 8.3 version
+
 ### 2.47.0
 - Added: Linxo Connect payment method
 
