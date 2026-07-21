@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+### 2.54.0
+- Fixed: Fixing security issues
+
 ### 2.53.0
 - Added: New signature types options for SEPA Direct Debit
 
