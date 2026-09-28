@@ -78,6 +78,10 @@ Suggested packages:
 
 ### Change log:
 
+### 2.58.0
+- Changed: Remove constraint to be logged in for Mealvouchers
+- Fixed: Sending emails with multiple addresses in the CC field
+
 ### 2.57.0
 - Fixed: Adjust tax amounts rounding and prevent a validation amount failure
 
