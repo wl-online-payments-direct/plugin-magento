@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+### 2.60.0
+- Added: Wero payment method
+
 ### 2.59.0
 - Fixed: Validate checkout addresses before the payment redirect to prevent paid payments without an order
 - Fixed: Checkout page breaking when the address could not be saved to the address book
