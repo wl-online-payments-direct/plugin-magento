@@ -78,6 +78,9 @@ Suggested packages:
 
 ### Change log:
 
+### 2.61.0
+- Added: PostFinance Pay payment method
+
 ### 2.60.0
 - Added: Wero payment method
 
